@@ -21,11 +21,15 @@ namespace ClassLibrary
             data = new Data();
         }
 
+        #region Methods
+
         public Data LoadData()
         {
             connection.Open();
-            OleDbCommand command = new OleDbCommand("getAllClients", connection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
+            OleDbCommand command = new OleDbCommand("getAllClients", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
             OleDbDataReader cursor = command.ExecuteReader();
 
             while (cursor.Read())
@@ -47,8 +51,10 @@ namespace ClassLibrary
         public string AddClient(string lastName, string firstName)
         {
             connection.Open();
-            OleDbCommand command = new OleDbCommand("insertClient", connection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
+            OleDbCommand command = new OleDbCommand("insertClient", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
             command.Parameters.AddWithValue("lastName", lastName.ToUpper());
             command.Parameters.AddWithValue("firstName", firstName);
 
@@ -63,7 +69,7 @@ namespace ClassLibrary
             finally
             {
                 connection.Close();
-                int id = data.GetClients().Count + 1;
+                int id = data.GetClients().Count + 2;
                 Client client = new Client(id, lastName.ToUpper(), firstName);
                 data.AddClient(client);
                 message = "Client added with success.";
@@ -75,8 +81,10 @@ namespace ClassLibrary
         public string UpdateClient(int id, string lastName, string firstName)
         {
             connection.Open();
-            OleDbCommand command = new OleDbCommand("updateClient", connection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
+            OleDbCommand command = new OleDbCommand("updateClient", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
             command.Parameters.AddWithValue("id", id);
             command.Parameters.AddWithValue("lastName", lastName.ToUpper());
             command.Parameters.AddWithValue("firstName", firstName);
@@ -102,8 +110,10 @@ namespace ClassLibrary
         public string DeleteClient(int id)
         {
             connection.Open();
-            OleDbCommand command = new OleDbCommand("deleteClient", connection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
+            OleDbCommand command = new OleDbCommand("deleteClient", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
             command.Parameters.AddWithValue("id", id);
 
             try
@@ -123,5 +133,7 @@ namespace ClassLibrary
 
             return message;
         }
+
+        #endregion
     }
 }

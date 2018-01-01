@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ClassLibrary;
+using System.IO;
 
 namespace ConsoleAppTest
 {
@@ -61,11 +62,19 @@ namespace ConsoleAppTest
                         Console.Clear();
                         break;
                     case 5:
-                        Environment.Exit(5);
+                        Console.Clear();
+                        message = PrintCSV(data);
+                        Console.WriteLine("\nSystem: " + message);
+                        Console.WriteLine("Press enter to continue ...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 6:
+                        Environment.Exit(6);
                         break;
                 }
 
-            } while (choice != 5);
+            } while (choice != 6);
         }
 
         static int ShowMenu()
@@ -77,7 +86,8 @@ namespace ConsoleAppTest
             Console.WriteLine("2. Add client");
             Console.WriteLine("3. Update client");
             Console.WriteLine("4. Delete client");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Print in CVS file");
+            Console.WriteLine("6. Exit");
             Console.WriteLine("----------------------------------");
             Console.Write("Choice: ");
 
@@ -125,6 +135,24 @@ namespace ConsoleAppTest
             Console.Write("\nClient number : ");
             int id = Convert.ToInt32(Console.ReadLine());
             string message = link.DeleteClient(id);
+            return message;
+        }
+
+        public static string PrintCSV(Data data)
+        {
+            CSV csv = new CSV();
+            List<string> items = new List<string> { "Last name", "First name" };
+            csv.HeaderBuilder(items);
+            csv.AddContent(data.GetClients());
+            
+            if (File.Exists(csv.GetFile()))
+            {
+                File.Delete(csv.GetFile());
+            }
+
+            csv.FileCreation();
+
+            string message = "Document created with success.";
             return message;
         }
     }
