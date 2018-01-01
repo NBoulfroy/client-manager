@@ -1,0 +1,127 @@
+﻿using System;
+using System.Configuration;
+using System.Data.OleDb;
+
+namespace ClassLibrary
+{
+    [Serializable]
+    public class Link
+    {
+        private ConnectionStringSettings connectionStringSettings;
+        private string connectionString;
+        private OleDbConnection connection;
+        private Data data;
+        private string message;
+
+        public Link(string connectionStringSettings)
+        {
+            this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
+            connectionString = this.connectionStringSettings.ConnectionString;
+            connection = new OleDbConnection(connectionString);
+            data = new Data();
+        }
+
+        public Data LoadData()
+        {
+            connection.Open();
+            OleDbCommand command = new OleDbCommand("getAllClients", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            OleDbDataReader cursor = command.ExecuteReader();
+
+            while (cursor.Read())
+            {
+                int id = (int)cursor["client_id"];
+                string lastName = (string)cursor["client_lastName"];
+                string firstName = (string)cursor["client_firstName"];
+
+                Client client = new Client(id, lastName, firstName);
+                data.AddClient(client);
+            }
+
+            cursor.Close();
+            connection.Close();
+
+            return data;
+        }
+
+        public string AddClient(string lastName, string firstName)
+        {
+            connection.Open();
+            OleDbCommand command = new OleDbCommand("insertClient", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("lastName", lastName.ToUpper());
+            command.Parameters.AddWithValue("firstName", firstName);
+
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch
+            {
+                message = "An error is occured, please try again or contact team support.";
+            }
+            finally
+            {
+                connection.Close();
+                int id = data.GetClients().Count + 1;
+                Client client = new Client(id, lastName.ToUpper(), firstName);
+                data.AddClient(client);
+                message = "Client added with success.";
+            }
+
+            return message;
+        }
+
+        public string UpdateClient(int id, string lastName, string firstName)
+        {
+            connection.Open();
+            OleDbCommand command = new OleDbCommand("updateClient", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("lastName", lastName.ToUpper());
+            command.Parameters.AddWithValue("firstName", firstName);
+
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch
+            {
+                message = "An error is occured, please try again or contact team support.";
+            }
+            finally
+            {
+                connection.Close();
+                data.UpdateClient(id, lastName.ToUpper(), firstName);
+                message = "Client updated with success.";
+            }
+
+            return message;
+        }
+
+        public string DeleteClient(int id)
+        {
+            connection.Open();
+            OleDbCommand command = new OleDbCommand("deleteClient", connection);
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("id", id);
+
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch
+            {
+                message = "An error is occured, please try again or contact team support.";
+            }
+            finally
+            {
+                connection.Close();
+                data.SubstractClient(id);
+                message = "Client deleted with success.";
+            }
+
+            return message;
+        }
+    }
+}
