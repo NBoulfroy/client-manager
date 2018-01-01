@@ -13,9 +13,9 @@ namespace ClassLibrary
         private Data data;
         private string message;
 
-        public Link(string connectionStringSettings)
+        public Link()
         {
-            this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
+            this.connectionStringSettings = ConfigurationManager.ConnectionStrings["access"];
             connectionString = this.connectionStringSettings.ConnectionString;
             connection = new OleDbConnection(connectionString);
             data = new Data();

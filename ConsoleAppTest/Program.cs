@@ -6,7 +6,7 @@ namespace ConsoleAppTest
 {
     class Program
     {
-        private static Link link = new Link("access2000");
+        private static Link link = new Link();
 
         static void Main(string[] args)
         {
