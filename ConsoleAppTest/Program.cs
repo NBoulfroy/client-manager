@@ -11,9 +11,7 @@ namespace ConsoleAppTest
 
         static void Main(string[] args)
         {
-            Data data = new Data();
-            data = link.LoadData();
-            SortedDictionary<int, Client> clients = data.GetClients();
+            link.LoadData();
             int choice;
 
             do
@@ -26,17 +24,18 @@ namespace ConsoleAppTest
                     default:
                         Console.Clear();
                         ShowMenu();
+                        Console.Clear();
                         break;
                     case 1:
                         Console.Clear();
-                        ShowClients(clients);
+                        ShowClients();
                         Console.WriteLine("\nPress enter to continue ...");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case 2:
                         Console.Clear();
-                        ShowClients(clients);
+                        ShowClients();
                         message = AddClient();
                         Console.WriteLine("\nSystem: " + message);
                         Console.WriteLine("Press enter to continue ...");
@@ -45,8 +44,8 @@ namespace ConsoleAppTest
                         break;
                     case 3:
                         Console.Clear();
-                        ShowClients(clients);
-                        message = UpdateClient(clients);
+                        ShowClients();
+                        message = UpdateClient();
                         Console.WriteLine("\nSystem: " + message);
                         Console.WriteLine("Press enter to continue ...");
                         Console.ReadKey();
@@ -54,7 +53,7 @@ namespace ConsoleAppTest
                         break;
                     case 4:
                         Console.Clear();
-                        ShowClients(clients);
+                        ShowClients();
                         message = DeleteClient();
                         Console.WriteLine("\nSystem: " + message);
                         Console.WriteLine("Press enter to continue ...");
@@ -63,7 +62,7 @@ namespace ConsoleAppTest
                         break;
                     case 5:
                         Console.Clear();
-                        message = PrintCSV(data);
+                        message = PrintCSV();
                         Console.WriteLine("\nSystem: " + message);
                         Console.WriteLine("Press enter to continue ...");
                         Console.ReadKey();
@@ -95,14 +94,14 @@ namespace ConsoleAppTest
             return Convert.ToInt32(choice);
         }
 
-        static void ShowClients(SortedDictionary<int, Client> clients)
+        static void ShowClients()
         {
-            Console.WriteLine("Client list:\n");
+            Console.WriteLine("Client list: ");
+            Console.WriteLine("--------------------------------------------\n");
 
-            foreach (KeyValuePair<int, Client> client in clients)
+            foreach (Client client in link.GetData().GetClients())
             {
-                Console.WriteLine("{0}. {1} {2}", client.Value.GetId(), client.Value.GetLastName(), client.Value.GetFirstName());
-                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("{0}. {1} {2}", client.GetId(), client.GetLastName(), client.GetFirstName());
             }
         }
 
@@ -112,38 +111,38 @@ namespace ConsoleAppTest
             string lastName = Console.ReadLine();
             Console.Write("Client's first name: ");
             string firstName = Console.ReadLine();
-
             string message = link.AddClient(lastName, firstName);
             return message;
         }
 
-        public static string UpdateClient(SortedDictionary<int, Client> clients)
+        public static string UpdateClient()
         {
-            Console.Write("\nClient's number: ");
-            int id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("\nClient's identity: ");
+            string id = Console.ReadLine();
             Console.Write("Client's last name: ");
-            string lastName = Convert.ToString(Console.ReadLine());
+            string lastName = Console.ReadLine();
             Console.Write("Client's first name: ");
-            string firstName = Convert.ToString(Console.ReadLine());
-
-            string message = link.UpdateClient(id, lastName, firstName);
+            string firstName = Console.ReadLine();
+            string message = link.UpdateClient(Convert.ToInt32(id), lastName, firstName);
             return message;
         }
 
         public static string DeleteClient()
         {
-            Console.Write("\nClient number : ");
+            Console.Write("\nClient's identity: ");
             int id = Convert.ToInt32(Console.ReadLine());
             string message = link.DeleteClient(id);
             return message;
         }
 
-        public static string PrintCSV(Data data)
+        public static string PrintCSV()
         {
-            CSV csv = new CSV();
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            desktopPath += "\\";
+            CSV csv = new CSV(desktopPath);
             List<string> items = new List<string> { "Last name", "First name" };
             csv.HeaderBuilder(items);
-            csv.AddContent(data.GetClients());
+            csv.AddContent(link.GetData().GetClients());
             
             if (File.Exists(csv.GetFile()))
             {
@@ -152,7 +151,7 @@ namespace ConsoleAppTest
 
             csv.FileCreation();
 
-            string message = "Document created with success.";
+            string message = "document created with success.";
             return message;
         }
     }

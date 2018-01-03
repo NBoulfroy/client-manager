@@ -41,11 +41,11 @@ namespace ClassLibrary
             stringBuilder.AppendLine(header);
         }
 
-        public void AddContent(SortedDictionary<int, Client> items)
+        public void AddContent(List<Client> items)
         {
-            foreach (KeyValuePair<int, Client> item in items)
+            foreach (Client item in items)
             {
-                stringBuilder.AppendLine(item.Value.GetLastName() + "," + item.Value.GetFirstName());
+                stringBuilder.AppendLine(item.GetLastName() + "," + item.GetFirstName());
             }
         }
 

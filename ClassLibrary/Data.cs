@@ -6,22 +6,22 @@ namespace ClassLibrary
     [Serializable]
     public class Data
     {
-        private SortedDictionary<int, Client> clients;
+        private List<Client> clients;
 
         public Data()
         {
-            clients = new SortedDictionary<int, Client>();
+            clients = new List<Client>();
         }
 
         #region Accessors
 
-        public SortedDictionary<int, Client> GetClients() { return clients; }
+        public List<Client> GetClients() { return clients; }
 
         #endregion
 
         #region Properties
 
-        public SortedDictionary<int, Client> Clients { get { return clients; } }
+        public List<Client> Clients { get { return clients; } }
 
         #endregion
 
@@ -29,23 +29,29 @@ namespace ClassLibrary
 
         public void AddClient(Client client)
         {
-            clients.Add(client.GetId(), client);
+            clients.Add(client);
         }
 
         public void SubstractClient(int id)
         {
-            clients.Remove(id);
+            for (int i = 0; i < clients.Count; i++)
+            {
+                if (clients[i].GetId() == id)
+                {
+                    clients.Remove(clients[i]);
+                }
+            }
         }
 
         public void UpdateClient(int id, string lastName, string firstName)
         {
-            foreach (KeyValuePair<int, Client> client in clients)
+            foreach (Client client in clients)
             {
-                if (client.Value.GetId() == id)
+                if (client.GetId() == id)
                 {
-                    client.Value.SetId(id);
-                    client.Value.SetLastName(lastName);
-                    client.Value.SetFirstName(firstName);
+                    client.SetId(id);
+                    client.SetLastName(lastName.ToUpper());
+                    client.SetFirstName(firstName);
                 }
             }
         }

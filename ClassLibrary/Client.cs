@@ -13,7 +13,7 @@ namespace ClassLibrary
         public Client(int id, string lastName, string firstName)
         {
             this.id = id;
-            this.lastName = lastName;
+            this.lastName = lastName.ToUpper();
             this.firstName = firstName;
         }
 
