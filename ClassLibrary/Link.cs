@@ -35,7 +35,7 @@ namespace ClassLibrary
         public Data LoadData()
         {
             // Query statement
-            string query = "SELECT client.client_id, client.client_lastName, client.client_firstName FROM client";
+            string query = "SELECT customer.customer_id, customer.customer_lastName, customer.customer_firstName FROM customer";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
@@ -47,12 +47,12 @@ namespace ClassLibrary
 
                     while (reader.Read())
                     {
-                        int id = (int)reader["client_id"];
-                        string lastName = (string)reader["client_lastName"];
-                        string firstName = (string)reader["client_firstName"];
+                        int id = (int)reader["customer_id"];
+                        string lastName = (string)reader["customer_lastName"];
+                        string firstName = (string)reader["customer_firstName"];
 
-                        Client client = new Client(id, lastName, firstName);
-                        data.AddClient(client);
+                        Customer customer = new Customer(id, lastName, firstName);
+                        data.AddCustomer(customer);
                     }
                     reader.Close();
                 }
@@ -76,11 +76,11 @@ namespace ClassLibrary
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public string AddClient(string lastName, string firstName)
+        public string AddCustomer(string lastName, string firstName)
         {
             string word = FirstNameManipulation(firstName);
             // Query Statement
-            string query = "INSERT INTO client (client_lastName, client_firstName) VALUES (@lastName, @firstName)";
+            string query = "INSERT INTO customer (customer_lastName, customer_firstName) VALUES (@lastName, @firstName)";
             
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
@@ -98,10 +98,10 @@ namespace ClassLibrary
                     command.CommandText = "SELECT @@IDENTITY";
                     int id = (int)command.ExecuteScalar();
 
-                    // Client added in memory.
-                    Client client = new Client(id, lastName, word);
-                    data.AddClient(client);
-                    message = "Client added with success.";
+                    // Customer added in memory.
+                    Customer customer = new Customer(id, lastName, word);
+                    data.AddCustomer(customer);
+                    message = "Customer added with success.";
                 }
                 catch(Exception e)
                 {
@@ -118,17 +118,17 @@ namespace ClassLibrary
         }
 
         /// <summary>
-        /// Update client in the database and in the memory.
+        /// Update customer in the database and in the memory.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public string UpdateClient(int id, string lastName, string firstName)
+        public string UpdateCustomer(int id, string lastName, string firstName)
         {
             string word = FirstNameManipulation(firstName);
             // Query statement.
-            string query = "UPDATE client SET client_lastName = @lastName, client_firstName = @firstName WHERE client_id = @id";
+            string query = "UPDATE customer SET customer_lastName = @lastName, customer_firstName = @firstName WHERE customer_id = @id";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
@@ -145,8 +145,8 @@ namespace ClassLibrary
                     // Query execution.
                     command.ExecuteNonQuery();
 
-                    data.UpdateClient(id, lastName, word);
-                    message = "Client updated with success.";
+                    data.UpdateCustomer(id, lastName, word);
+                    message = "Customer updated with success.";
                 }
                 catch(Exception e)
                 {
@@ -162,10 +162,10 @@ namespace ClassLibrary
             return message;
         }
 
-        public string DeleteClient(int id)
+        public string DeleteCustomer(int id)
         {
             // Query statement.
-            string query = "DELETE * FROM client WHERE client.client_id = @id";
+            string query = "DELETE * FROM customer WHERE customer.customer_id = @id";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
@@ -179,8 +179,8 @@ namespace ClassLibrary
                     // Query execution.
                     command.ExecuteNonQuery();
 
-                    data.SubstractClient(id);
-                    message = "Client deleted with success.";
+                    data.SubstractCustomer(id);
+                    message = "Customer deleted with success.";
                 }
                 catch (Exception e)
                 {

@@ -6,52 +6,52 @@ namespace ClassLibrary
     [Serializable]
     public class Data
     {
-        private List<Client> clients;
+        private List<Customer> customers;
 
         public Data()
         {
-            clients = new List<Client>();
+            customers = new List<Customer>();
         }
 
-        #region Accessors
+        #region Accessor
 
-        public List<Client> GetClients() { return clients; }
+        public List<Customer> GetCustomers() { return customers; }
 
         #endregion
 
-        #region Properties
+        #region Property
 
-        public List<Client> Clients { get { return clients; } }
+        public List<Customer> Customers { get { return customers; } }
 
         #endregion
 
         #region Methods
 
-        public void AddClient(Client client)
+        public void AddCustomer(Customer customer)
         {
-            clients.Add(client);
+            customers.Add(customer);
         }
 
-        public void SubstractClient(int id)
+        public void SubstractCustomer(int id)
         {
-            for (int i = 0; i < clients.Count; i++)
+            for (int i = 0; i < customers.Count; i++)
             {
-                if (clients[i].GetId() == id)
+                if (customers[i].GetId() == id)
                 {
-                    clients.Remove(clients[i]);
+                    customers.Remove(customers[i]);
                 }
             }
         }
 
-        public void UpdateClient(int id, string lastName, string firstName)
+        public void UpdateCustomer(int id, string lastName, string firstName)
         {
-            foreach (Client client in clients)
+            foreach (Customer customer in customers)
             {
-                if (client.GetId() == id)
+                if (customer.GetId() == id)
                 {
-                    client.SetId(id);
-                    client.SetLastName(lastName.ToUpper());
-                    client.SetFirstName(firstName);
+                    customer.SetId(id);
+                    customer.SetLastName(lastName.ToUpper());
+                    customer.SetFirstName(firstName);
                 }
             }
         }

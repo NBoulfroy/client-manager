@@ -7,7 +7,7 @@
     <ProjectGuid>{B7AED9B0-CA15-4654-B210-AF3E94450B07}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsoleAppTest</RootNamespace>
-    <AssemblyName>client-manager</AssemblyName>
+    <AssemblyName>customer-manager</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
