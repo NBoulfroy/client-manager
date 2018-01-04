@@ -12,71 +12,44 @@ namespace ConsoleAppTest
         static void Main(string[] args)
         {
             link.LoadData();
-            int choice;
-
-            do
+            ShowMenu();
+            string choice = Console.ReadLine();
+            while (choice != "6")
             {
-                choice = ShowMenu();
-                string message;
-
-                switch (choice)
+                Console.Clear();
+                switch(choice)
                 {
                     default:
-                        Console.Clear();
-                        ShowMenu();
-                        Console.Clear();
+                        Console.WriteLine("Nonexistent option, please try again.");
                         break;
-                    case 1:
-                        Console.Clear();
+                    case "1":
                         ShowClients();
-                        Console.WriteLine("\nPress enter to continue ...");
-                        Console.ReadKey();
-                        Console.Clear();
                         break;
-                    case 2:
-                        Console.Clear();
+                    case "2":
                         ShowClients();
-                        message = AddClient();
-                        Console.WriteLine("\nSystem: " + message);
-                        Console.WriteLine("Press enter to continue ...");
-                        Console.ReadKey();
-                        Console.Clear();
+                        AddClient();
                         break;
-                    case 3:
-                        Console.Clear();
+                    case "3":
                         ShowClients();
-                        message = UpdateClient();
-                        Console.WriteLine("\nSystem: " + message);
-                        Console.WriteLine("Press enter to continue ...");
-                        Console.ReadKey();
-                        Console.Clear();
+                        UpdateClient();
                         break;
-                    case 4:
-                        Console.Clear();
+                    case "4":
                         ShowClients();
-                        message = DeleteClient();
-                        Console.WriteLine("\nSystem: " + message);
-                        Console.WriteLine("Press enter to continue ...");
-                        Console.ReadKey();
-                        Console.Clear();
+                        DeleteClient();
                         break;
-                    case 5:
-                        Console.Clear();
-                        message = PrintCSV();
-                        Console.WriteLine("\nSystem: " + message);
-                        Console.WriteLine("Press enter to continue ...");
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 6:
-                        Environment.Exit(6);
+                    case "5":
+                        PrintCSV();
                         break;
                 }
-
-            } while (choice != 6);
+                Console.WriteLine("\nPress any other key to return to the menu ...");
+                Console.ReadKey();
+                Console.Clear();
+                ShowMenu();
+                choice = Console.ReadLine();
+            }
         }
 
-        static int ShowMenu()
+        static void ShowMenu()
         {
             Console.WriteLine("----------------------------------");
             Console.WriteLine("Client-Manager console application");
@@ -89,9 +62,6 @@ namespace ConsoleAppTest
             Console.WriteLine("6. Exit");
             Console.WriteLine("----------------------------------");
             Console.Write("Choice: ");
-
-            dynamic choice = Console.ReadLine();
-            return Convert.ToInt32(choice);
         }
 
         static void ShowClients()
@@ -105,17 +75,24 @@ namespace ConsoleAppTest
             }
         }
 
-        public static string AddClient()
+        static void AddClient()
         {
             Console.Write("\nClient's last name: ");
             string lastName = Console.ReadLine();
             Console.Write("Client's first name: ");
             string firstName = Console.ReadLine();
-            string message = link.AddClient(lastName, firstName);
-            return message;
+
+            if (lastName != "" && lastName != null && firstName != null && firstName != "")
+            {
+                Console.WriteLine("\n" + link.AddClient(lastName, firstName));
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid input, please try again.");
+            }
         }
 
-        public static string UpdateClient()
+        static void UpdateClient()
         {
             Console.Write("\nClient's identity: ");
             string id = Console.ReadLine();
@@ -123,19 +100,34 @@ namespace ConsoleAppTest
             string lastName = Console.ReadLine();
             Console.Write("Client's first name: ");
             string firstName = Console.ReadLine();
-            string message = link.UpdateClient(Convert.ToInt32(id), lastName, firstName);
-            return message;
+
+            if (int.TryParse(id, out int identity) && lastName != "" && lastName != null && firstName != null && firstName != "")
+            {
+                Console.WriteLine("\n" + link.UpdateClient(Convert.ToInt32(id), lastName, firstName));
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid input, please try again.");
+            }
         }
 
-        public static string DeleteClient()
+        static void DeleteClient()
         {
             Console.Write("\nClient's identity: ");
-            int id = Convert.ToInt32(Console.ReadLine());
-            string message = link.DeleteClient(id);
-            return message;
+            string id = Console.ReadLine();
+
+            if (int.TryParse(id, out int identity))
+            {
+                Console.WriteLine("\n" + link.DeleteClient(identity));
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid input, please try again.");
+            }
+            
         }
 
-        public static string PrintCSV()
+        static void PrintCSV()
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             desktopPath += "\\";
@@ -144,15 +136,14 @@ namespace ConsoleAppTest
             csv.HeaderBuilder(items);
             csv.AddContent(link.GetData().GetClients());
             
-            if (File.Exists(csv.GetFile()))
+            if (File.Exists(csv.GetPath() + csv.GetFile()))
             {
-                File.Delete(csv.GetFile());
+                File.Delete(csv.GetPath() + csv.GetFile());
             }
 
             csv.FileCreation();
 
-            string message = "document created with success.";
-            return message;
+            Console.WriteLine("Document created with success on desktop.");
         }
     }
 }
