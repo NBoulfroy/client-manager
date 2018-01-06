@@ -51,16 +51,16 @@ namespace ConsoleAppTest
 
         static void ShowMenu()
         {
-            Console.WriteLine("----------------------------------");
+            Console.WriteLine("------------------------------------");
             Console.WriteLine("Customer-Manager console application");
-            Console.WriteLine("----------------------------------");
+            Console.WriteLine("------------------------------------");
             Console.WriteLine("1. Show all customers");
             Console.WriteLine("2. Add customer");
             Console.WriteLine("3. Update customer");
             Console.WriteLine("4. Delete customer");
             Console.WriteLine("5. Print in CVS file");
             Console.WriteLine("6. Exit");
-            Console.WriteLine("----------------------------------");
+            Console.WriteLine("------------------------------------");
             Console.Write("Choice: ");
         }
 
@@ -82,7 +82,7 @@ namespace ConsoleAppTest
             Console.Write("Customer's first name: ");
             string firstName = Console.ReadLine();
 
-            if (lastName != "" && lastName != null && firstName != null && firstName != "")
+            if (lastName != null && lastName != "" && lastName != " " && firstName != null && firstName != "" && firstName != " ")
             {
                 Console.WriteLine("\n" + link.AddCustomer(lastName, firstName));
             }
@@ -101,7 +101,9 @@ namespace ConsoleAppTest
             Console.Write("Customer's first name: ");
             string firstName = Console.ReadLine();
 
-            if (int.TryParse(id, out int identity) && lastName != "" && lastName != null && firstName != null && firstName != "")
+            if (int.TryParse(id, out int identity) 
+                && lastName != null && lastName != "" && lastName != " " 
+                && firstName != null && firstName != "" && firstName != " ")
             {
                 Console.WriteLine("\n" + link.UpdateCustomer(Convert.ToInt32(identity), lastName, firstName));
             }

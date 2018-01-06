@@ -90,7 +90,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>if_vector_65_16_473774.ico</ApplicationIcon>
+    <ApplicationIcon>if_terminal_285695.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClassLibrary">
@@ -134,7 +134,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="if_vector_65_16_473774.ico" />
+    <Content Include="if_terminal_285695.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

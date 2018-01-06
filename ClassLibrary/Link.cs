@@ -5,16 +5,17 @@ using System.Data.OleDb;
 namespace ClassLibrary
 {
     [Serializable]
-    public class Link
+    public class Link : Database
     {
         private ConnectionStringSettings connectionStringSettings;
         private string connectionString;
         private Data data;
         private string message;
 
-        public Link()
+        public Link(string connectionStringSettings = "sgbd")
         {
-            connectionStringSettings = ConfigurationManager.ConnectionStrings["sgbd"];
+            IsCrypted();
+            this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
             connectionString = this.connectionStringSettings.ConnectionString;
             data = new Data();
         }
@@ -23,6 +24,12 @@ namespace ClassLibrary
 
         public Data GetData() { return data; }
         public string GetMessage() { return message; }
+
+        #endregion
+
+        #region Property
+
+        public string Message { get { return message; } }
 
         #endregion
 
@@ -71,22 +78,23 @@ namespace ClassLibrary
         }
 
         /// <summary>
-        /// Add client in the database and in the memory.
+        /// Add customer in the database and in the memory.
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
         public string AddCustomer(string lastName, string firstName)
         {
-            string word = FirstNameManipulation(firstName);
+            string surname = LastNameManipulation(lastName);
+            string name = FirstNameManipulation(firstName);
             // Query Statement
             string query = "INSERT INTO customer (customer_lastName, customer_firstName) VALUES (@lastName, @firstName)";
             
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
                 OleDbCommand command = new OleDbCommand(query, connection);
-                command.Parameters.AddWithValue("@lastName", lastName.ToUpper());
-                command.Parameters.AddWithValue("@firstName", word);
+                command.Parameters.AddWithValue("@lastName", surname);
+                command.Parameters.AddWithValue("@firstName", name);
 
                 try
                 {
@@ -99,7 +107,7 @@ namespace ClassLibrary
                     int id = (int)command.ExecuteScalar();
 
                     // Customer added in memory.
-                    Customer customer = new Customer(id, lastName, word);
+                    Customer customer = new Customer(id, surname, name);
                     data.AddCustomer(customer);
                     message = "Customer added with success.";
                 }
@@ -126,7 +134,8 @@ namespace ClassLibrary
         /// <returns></returns>
         public string UpdateCustomer(int id, string lastName, string firstName)
         {
-            string word = FirstNameManipulation(firstName);
+            string surname = LastNameManipulation(lastName);
+            string name = FirstNameManipulation(firstName);
             // Query statement.
             string query = "UPDATE customer SET customer_lastName = @lastName, customer_firstName = @firstName WHERE customer_id = @id";
 
@@ -135,8 +144,8 @@ namespace ClassLibrary
                 // Command creation.
                 OleDbCommand command = new OleDbCommand(query, connection);
                 command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@lastName", lastName.ToUpper());
-                command.Parameters.AddWithValue("@firstName", word);
+                command.Parameters.AddWithValue("@lastName", surname);
+                command.Parameters.AddWithValue("@firstName", name);
 
                 try
                 {
@@ -145,7 +154,7 @@ namespace ClassLibrary
                     // Query execution.
                     command.ExecuteNonQuery();
 
-                    data.UpdateCustomer(id, lastName, word);
+                    data.UpdateCustomer(id, surname, name);
                     message = "Customer updated with success.";
                 }
                 catch(Exception e)
@@ -162,6 +171,11 @@ namespace ClassLibrary
             return message;
         }
 
+        /// <summary>
+        /// Delete customer in the database and in the memory by his identity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string DeleteCustomer(int id)
         {
             // Query statement.
@@ -179,7 +193,7 @@ namespace ClassLibrary
                     // Query execution.
                     command.ExecuteNonQuery();
 
-                    data.SubstractCustomer(id);
+                    data.RemoveCustomer(id);
                     message = "Customer deleted with success.";
                 }
                 catch (Exception e)
@@ -194,19 +208,6 @@ namespace ClassLibrary
             }
 
             return message;
-        }
-
-        /// <summary>
-        /// Return string like "Nicolas".
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <returns></returns>
-        private static string FirstNameManipulation(string firstName)
-        {
-            string firstName_begin = firstName.Substring(0, 1).ToUpper();
-            string firstName_end = firstName.Substring(1, firstName.Length - 1);
-            string word = firstName_begin + firstName_end;
-            return word;
         }
 
         #endregion

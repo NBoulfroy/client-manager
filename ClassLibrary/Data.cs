@@ -32,7 +32,7 @@ namespace ClassLibrary
             customers.Add(customer);
         }
 
-        public void SubstractCustomer(int id)
+        public void RemoveCustomer(int id)
         {
             for (int i = 0; i < customers.Count; i++)
             {
