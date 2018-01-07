@@ -1,15 +1,13 @@
 ﻿using System;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.IO;
 
 namespace ClassLibrary
 {
     [Serializable]
     public abstract class Database
     {
-        protected void IsCrypted()
-        {
-            
-        }
-
         /// <summary>
         /// Return string like "Nicolas" or "Pierre-Robert".
         /// </summary>

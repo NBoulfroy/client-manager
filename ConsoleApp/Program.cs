@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ClassLibrary;
 using System.IO;
 
-namespace ConsoleAppTest
+namespace ConsoleApp
 {
     class Program
     {
@@ -17,7 +17,7 @@ namespace ConsoleAppTest
             while (choice != "6")
             {
                 Console.Clear();
-                switch(choice)
+                switch (choice)
                 {
                     default:
                         Console.WriteLine("Nonexistent option, please try again.");
@@ -101,8 +101,8 @@ namespace ConsoleAppTest
             Console.Write("Customer's first name: ");
             string firstName = Console.ReadLine();
 
-            if (int.TryParse(id, out int identity) 
-                && lastName != null && lastName != "" && lastName != " " 
+            if (int.TryParse(id, out int identity)
+                && lastName != null && lastName != "" && lastName != " "
                 && firstName != null && firstName != "" && firstName != " ")
             {
                 Console.WriteLine("\n" + link.UpdateCustomer(Convert.ToInt32(identity), lastName, firstName));
@@ -126,7 +126,7 @@ namespace ConsoleAppTest
             {
                 Console.WriteLine("\nInvalid input, please try again.");
             }
-            
+
         }
 
         static void PrintCSV()
@@ -137,7 +137,7 @@ namespace ConsoleAppTest
             List<string> items = new List<string> { "Last name", "First name" };
             csv.HeaderBuilder(items);
             csv.AddContent(link.GetData().GetCustomers());
-            
+
             if (File.Exists(csv.GetPath() + csv.GetFile()))
             {
                 File.Delete(csv.GetPath() + csv.GetFile());

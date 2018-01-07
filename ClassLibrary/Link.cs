@@ -9,19 +9,24 @@ namespace ClassLibrary
     {
         private ConnectionStringSettings connectionStringSettings;
         private string connectionString;
-        private Data data;
+        string file;
+        string extension;
         private string message;
+        private Data data;
 
-        public Link(string connectionStringSettings = "sgbd")
+        public Link(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
         {
-            IsCrypted();
             this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
             connectionString = this.connectionStringSettings.ConnectionString;
+            this.file = file;
+            this.extension = extension;
             data = new Data();
         }
 
         #region Accessors
 
+        public string GetFile() { return file; }
+        public string GetExtension() { return extension; }
         public Data GetData() { return data; }
         public string GetMessage() { return message; }
 
@@ -41,12 +46,16 @@ namespace ClassLibrary
         /// <returns></returns>
         public Data LoadData()
         {
-            // Query statement
-            string query = "SELECT customer.customer_id, customer.customer_lastName, customer.customer_firstName FROM customer";
+            // Query statement.
+            string query = "SELECT customer_id, customer_lastName, customer_firstName FROM customer";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
-                OleDbCommand command = new OleDbCommand(query, connection);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
+
                 try
                 {
                     connection.Open();
@@ -65,8 +74,8 @@ namespace ClassLibrary
                 }
                 catch (Exception e)
                 {
-                    // message = e.Message.ToString();
-                    message = "An error is occured, please try again or contact team support.";
+                    message = e.Message.ToString();
+                    // message = "An error is occured, please try again or contact team support.";
                 }
                 finally
                 {
@@ -85,42 +94,46 @@ namespace ClassLibrary
         /// <returns></returns>
         public string AddCustomer(string lastName, string firstName)
         {
+            // String manipulations.
             string surname = LastNameManipulation(lastName);
             string name = FirstNameManipulation(firstName);
             // Query Statement
             string query = "INSERT INTO customer (customer_lastName, customer_firstName) VALUES (@lastName, @firstName)";
-            
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+
+        using (OleDbConnection connection = new OleDbConnection(connectionString))
+        {
+            OleDbCommand command = new OleDbCommand(query, connection)
             {
-                OleDbCommand command = new OleDbCommand(query, connection);
-                command.Parameters.AddWithValue("@lastName", surname);
-                command.Parameters.AddWithValue("@firstName", name);
+                CommandType = System.Data.CommandType.Text
+            };
+            command.Parameters.AddWithValue("@lastName", surname);
+            command.Parameters.AddWithValue("@firstName", name);
 
-                try
-                {
-                    // Connection to the database.
-                    connection.Open();
-                    // Execute the first query write previously.
-                    command.ExecuteNonQuery();
-                    // Last inserted identity recuperation.
-                    command.CommandText = "SELECT @@IDENTITY";
-                    int id = (int)command.ExecuteScalar();
+            try
+            {
+                // Connection to the database.
+                connection.Open();
+                // Execute the first query write previously.
+                command.ExecuteNonQuery();
+                // Last inserted identity recuperation.
+                command.CommandText = "SELECT @@IDENTITY";
+                int id = (int)command.ExecuteScalar();
 
-                    // Customer added in memory.
-                    Customer customer = new Customer(id, surname, name);
-                    data.AddCustomer(customer);
-                    message = "Customer added with success.";
-                }
-                catch(Exception e)
-                {
-                    // message = e.Message.ToString();
-                    message = "An error is occured, please try again or contact team support.";
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                // Customer added in memory.
+                Customer customer = new Customer(id, surname, name);
+                data.AddCustomer(customer);
+                message = "Customer added with success.";
             }
+            catch (Exception e)
+            {
+                message = e.Message.ToString();
+                // message = "An error is occured, please try again or contact team support.";
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
             return message;
         }
@@ -134,6 +147,7 @@ namespace ClassLibrary
         /// <returns></returns>
         public string UpdateCustomer(int id, string lastName, string firstName)
         {
+            // String manipulations.
             string surname = LastNameManipulation(lastName);
             string name = FirstNameManipulation(firstName);
             // Query statement.
@@ -142,10 +156,13 @@ namespace ClassLibrary
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
                 // Command creation.
-                OleDbCommand command = new OleDbCommand(query, connection);
-                command.Parameters.AddWithValue("@id", id);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
                 command.Parameters.AddWithValue("@lastName", surname);
                 command.Parameters.AddWithValue("@firstName", name);
+                command.Parameters.AddWithValue("@id", id);
 
                 try
                 {
@@ -183,7 +200,10 @@ namespace ClassLibrary
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
-                OleDbCommand command = new OleDbCommand(query, connection);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
                 command.Parameters.AddWithValue("@id", id);
 
                 try
@@ -198,8 +218,8 @@ namespace ClassLibrary
                 }
                 catch (Exception e)
                 {
-                    // message = e.Message.ToString();
-                    message = "An error is occured, please try again or contact team support.";
+                    message = e.Message.ToString();
+                    // message = "An error is occured, please try again or contact team support.";
                 }
                 finally
                 {
