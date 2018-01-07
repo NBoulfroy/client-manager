@@ -4,13 +4,13 @@ using System.Text;
 namespace ClassLibrary
 {
     [Serializable]
-    public class Client
+    public class Customer
     {
         private int id;
         private string lastName;
         private string firstName;
 
-        public Client(int id, string lastName, string firstName)
+        public Customer(int id, string lastName, string firstName)
         {
             this.id = id;
             this.lastName = lastName.ToUpper();

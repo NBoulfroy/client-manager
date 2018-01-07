@@ -5,24 +5,36 @@ using System.Data.OleDb;
 namespace ClassLibrary
 {
     [Serializable]
-    public class Link
+    public class Link : Database
     {
         private ConnectionStringSettings connectionStringSettings;
         private string connectionString;
-        private Data data;
+        string file;
+        string extension;
         private string message;
+        private Data data;
 
-        public Link()
+        public Link(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
         {
-            connectionStringSettings = ConfigurationManager.ConnectionStrings["sgbd"];
+            this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
             connectionString = this.connectionStringSettings.ConnectionString;
+            this.file = file;
+            this.extension = extension;
             data = new Data();
         }
 
         #region Accessors
 
+        public string GetFile() { return file; }
+        public string GetExtension() { return extension; }
         public Data GetData() { return data; }
         public string GetMessage() { return message; }
+
+        #endregion
+
+        #region Property
+
+        public string Message { get { return message; } }
 
         #endregion
 
@@ -34,12 +46,16 @@ namespace ClassLibrary
         /// <returns></returns>
         public Data LoadData()
         {
-            // Query statement
-            string query = "SELECT client.client_id, client.client_lastName, client.client_firstName FROM client";
+            // Query statement.
+            string query = "SELECT customer_id, customer_lastName, customer_firstName FROM customer";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
-                OleDbCommand command = new OleDbCommand(query, connection);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
+
                 try
                 {
                     connection.Open();
@@ -47,19 +63,19 @@ namespace ClassLibrary
 
                     while (reader.Read())
                     {
-                        int id = (int)reader["client_id"];
-                        string lastName = (string)reader["client_lastName"];
-                        string firstName = (string)reader["client_firstName"];
+                        int id = (int)reader["customer_id"];
+                        string lastName = (string)reader["customer_lastName"];
+                        string firstName = (string)reader["customer_firstName"];
 
-                        Client client = new Client(id, lastName, firstName);
-                        data.AddClient(client);
+                        Customer customer = new Customer(id, lastName, firstName);
+                        data.AddCustomer(customer);
                     }
                     reader.Close();
                 }
                 catch (Exception e)
                 {
-                    // message = e.Message.ToString();
-                    message = "An error is occured, please try again or contact team support.";
+                    message = e.Message.ToString();
+                    // message = "An error is occured, please try again or contact team support.";
                 }
                 finally
                 {
@@ -71,72 +87,82 @@ namespace ClassLibrary
         }
 
         /// <summary>
-        /// Add client in the database and in the memory.
+        /// Add customer in the database and in the memory.
         /// </summary>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public string AddClient(string lastName, string firstName)
+        public string AddCustomer(string lastName, string firstName)
         {
-            string word = FirstNameManipulation(firstName);
+            // String manipulations.
+            string surname = LastNameManipulation(lastName);
+            string name = FirstNameManipulation(firstName);
             // Query Statement
-            string query = "INSERT INTO client (client_lastName, client_firstName) VALUES (@lastName, @firstName)";
-            
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            string query = "INSERT INTO customer (customer_lastName, customer_firstName) VALUES (@lastName, @firstName)";
+
+        using (OleDbConnection connection = new OleDbConnection(connectionString))
+        {
+            OleDbCommand command = new OleDbCommand(query, connection)
             {
-                OleDbCommand command = new OleDbCommand(query, connection);
-                command.Parameters.AddWithValue("@lastName", lastName.ToUpper());
-                command.Parameters.AddWithValue("@firstName", word);
+                CommandType = System.Data.CommandType.Text
+            };
+            command.Parameters.AddWithValue("@lastName", surname);
+            command.Parameters.AddWithValue("@firstName", name);
 
-                try
-                {
-                    // Connection to the database.
-                    connection.Open();
-                    // Execute the first query write previously.
-                    command.ExecuteNonQuery();
-                    // Last inserted identity recuperation.
-                    command.CommandText = "SELECT @@IDENTITY";
-                    int id = (int)command.ExecuteScalar();
+            try
+            {
+                // Connection to the database.
+                connection.Open();
+                // Execute the first query write previously.
+                command.ExecuteNonQuery();
+                // Last inserted identity recuperation.
+                command.CommandText = "SELECT @@IDENTITY";
+                int id = (int)command.ExecuteScalar();
 
-                    // Client added in memory.
-                    Client client = new Client(id, lastName, word);
-                    data.AddClient(client);
-                    message = "Client added with success.";
-                }
-                catch(Exception e)
-                {
-                    // message = e.Message.ToString();
-                    message = "An error is occured, please try again or contact team support.";
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                // Customer added in memory.
+                Customer customer = new Customer(id, surname, name);
+                data.AddCustomer(customer);
+                message = "Customer added with success.";
             }
+            catch (Exception e)
+            {
+                message = e.Message.ToString();
+                // message = "An error is occured, please try again or contact team support.";
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
 
             return message;
         }
 
         /// <summary>
-        /// Update client in the database and in the memory.
+        /// Update customer in the database and in the memory.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="lastName"></param>
         /// <param name="firstName"></param>
         /// <returns></returns>
-        public string UpdateClient(int id, string lastName, string firstName)
+        public string UpdateCustomer(int id, string lastName, string firstName)
         {
-            string word = FirstNameManipulation(firstName);
+            // String manipulations.
+            string surname = LastNameManipulation(lastName);
+            string name = FirstNameManipulation(firstName);
             // Query statement.
-            string query = "UPDATE client SET client_lastName = @lastName, client_firstName = @firstName WHERE client_id = @id";
+            string query = "UPDATE customer SET customer_lastName = @lastName, customer_firstName = @firstName WHERE customer_id = @id";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
                 // Command creation.
-                OleDbCommand command = new OleDbCommand(query, connection);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
+                command.Parameters.AddWithValue("@lastName", surname);
+                command.Parameters.AddWithValue("@firstName", name);
                 command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@lastName", lastName.ToUpper());
-                command.Parameters.AddWithValue("@firstName", word);
 
                 try
                 {
@@ -145,8 +171,8 @@ namespace ClassLibrary
                     // Query execution.
                     command.ExecuteNonQuery();
 
-                    data.UpdateClient(id, lastName, word);
-                    message = "Client updated with success.";
+                    data.UpdateCustomer(id, surname, name);
+                    message = "Customer updated with success.";
                 }
                 catch(Exception e)
                 {
@@ -162,14 +188,22 @@ namespace ClassLibrary
             return message;
         }
 
-        public string DeleteClient(int id)
+        /// <summary>
+        /// Delete customer in the database and in the memory by his identity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string DeleteCustomer(int id)
         {
             // Query statement.
-            string query = "DELETE * FROM client WHERE client.client_id = @id";
+            string query = "DELETE * FROM customer WHERE customer.customer_id = @id";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
-                OleDbCommand command = new OleDbCommand(query, connection);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
                 command.Parameters.AddWithValue("@id", id);
 
                 try
@@ -179,13 +213,13 @@ namespace ClassLibrary
                     // Query execution.
                     command.ExecuteNonQuery();
 
-                    data.SubstractClient(id);
-                    message = "Client deleted with success.";
+                    data.RemoveCustomer(id);
+                    message = "Customer deleted with success.";
                 }
                 catch (Exception e)
                 {
-                    // message = e.Message.ToString();
-                    message = "An error is occured, please try again or contact team support.";
+                    message = e.Message.ToString();
+                    // message = "An error is occured, please try again or contact team support.";
                 }
                 finally
                 {
@@ -194,19 +228,6 @@ namespace ClassLibrary
             }
 
             return message;
-        }
-
-        /// <summary>
-        /// Return string like "Nicolas".
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <returns></returns>
-        private static string FirstNameManipulation(string firstName)
-        {
-            string firstName_begin = firstName.Substring(0, 1).ToUpper();
-            string firstName_end = firstName.Substring(1, firstName.Length - 1);
-            string word = firstName_begin + firstName_end;
-            return word;
         }
 
         #endregion

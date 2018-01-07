@@ -41,9 +41,9 @@ namespace ClassLibrary
             stringBuilder.AppendLine(header);
         }
 
-        public void AddContent(List<Client> items)
+        public void AddContent(List<Customer> items)
         {
-            foreach (Client item in items)
+            foreach (Customer item in items)
             {
                 stringBuilder.AppendLine(item.GetLastName() + "," + item.GetFirstName());
             }
