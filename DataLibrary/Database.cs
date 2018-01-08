@@ -3,7 +3,7 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.IO;
 
-namespace ClassLibrary
+namespace DataLibrary
 {
     [Serializable]
     public abstract class Database

@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Data.OleDb;
 
-namespace ClassLibrary
+namespace DataLibrary
 {
     [Serializable]
     public class Link : Database

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Text;
 
-namespace ClassLibrary
+namespace DataLibrary
 {
     [Serializable]
     public class Customer

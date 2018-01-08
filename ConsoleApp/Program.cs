@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using ClassLibrary;
+using DataLibrary;
+using DocumentLibrary;
 using System.IO;
 
 namespace ConsoleApp
@@ -58,7 +58,8 @@ namespace ConsoleApp
             Console.WriteLine("2. Add customer");
             Console.WriteLine("3. Update customer");
             Console.WriteLine("4. Delete customer");
-            Console.WriteLine("5. Print in CVS file");
+            // Console.WriteLine("5. Print in CVS file");
+            Console.WriteLine("5. Print in ODS file");
             Console.WriteLine("6. Exit");
             Console.WriteLine("------------------------------------");
             Console.Write("Choice: ");
@@ -133,17 +134,23 @@ namespace ConsoleApp
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             desktopPath += "\\";
-            CSV csv = new CSV(desktopPath);
-            List<string> items = new List<string> { "Last name", "First name" };
-            csv.HeaderBuilder(items);
-            csv.AddContent(link.GetData().GetCustomers());
+            // CSV csv = new CSV(desktopPath);
+            // csv.DocumentBuilder(link.GetData().GetCustomers());
 
-            if (File.Exists(csv.GetPath() + csv.GetFile()))
+            OpenDocumentSpreadsheet ods = new OpenDocumentSpreadsheet(desktopPath);
+
+            /*if (File.Exists(csv.GetPath() + csv.GetFile()))
             {
                 File.Delete(csv.GetPath() + csv.GetFile());
+            }*/
+
+            if (File.Exists(ods.GetPath() + ods.GetFile()))
+            {
+                File.Delete(ods.GetPath() + ods.GetFile());
             }
 
-            csv.FileCreation();
+            // csv.FileCreation();
+            ods.DocumentBuilder(link.GetData().GetCustomers());
 
             Console.WriteLine("Document created with success on desktop.");
         }

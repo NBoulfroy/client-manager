@@ -2,11 +2,12 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using DataLibrary;
 
-namespace ClassLibrary
+namespace DocumentLibrary
 {
     [Serializable]
-    public class CSV
+    public class CSV : IDocument
     {
         StringBuilder stringBuilder;
         string path;
@@ -41,7 +42,7 @@ namespace ClassLibrary
             stringBuilder.AppendLine(header);
         }
 
-        public void AddContent(List<Customer> items)
+        public void DocumentBuilder(List<Customer> items)
         {
             foreach (Customer item in items)
             {
