@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace ClassLibrary
 {
@@ -34,6 +33,7 @@ namespace ClassLibrary
         public int Id { get { return id; } set { id = value; } }
         public string LastName { get { return lastName; } set { lastName = value; } }
         public string FirstName { get { return firstName; } set { firstName = value; } }
+        public string LastNameFirstName { get { return lastName + " " + firstName; } }
 
         #endregion
     }

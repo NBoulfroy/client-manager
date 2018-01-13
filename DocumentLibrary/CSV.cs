@@ -2,17 +2,18 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using ClassLibrary;
 
-namespace ClassLibrary
+namespace DocumentLibrary
 {
     [Serializable]
-    public class CSV
+    public class CSV : IDocument
     {
         StringBuilder stringBuilder;
         string path;
         string file;
 
-        public CSV(string path = "", string file = "spreadsheet.csv")
+        public CSV(string path, string file)
         {
             stringBuilder = new StringBuilder();
             this.path = path;
@@ -21,7 +22,6 @@ namespace ClassLibrary
 
         #region Accessors
 
-        public StringBuilder GetStringBuilder() { return stringBuilder; }
         public string GetPath() { return path; }
         public string GetFile() { return file; }
 
@@ -29,6 +29,10 @@ namespace ClassLibrary
 
         #region Methods
 
+        /// <summary>
+        /// Creates header in CSV file.
+        /// </summary>
+        /// <param name="items"></param>
         public void HeaderBuilder(List<string> items)
         {
             string header = "";
@@ -41,16 +45,17 @@ namespace ClassLibrary
             stringBuilder.AppendLine(header);
         }
 
-        public void AddContent(List<Customer> items)
+        /// <summary>
+        /// Adds content in CSV file and creates it.
+        /// </summary>
+        /// <param name="items"></param>
+        public void DocumentBuilder(List<Customer> items)
         {
             foreach (Customer item in items)
             {
                 stringBuilder.AppendLine(item.GetLastName() + "," + item.GetFirstName());
             }
-        }
 
-        public void FileCreation()
-        {
             File.AppendAllText(path + file, stringBuilder.ToString());
         }
 
