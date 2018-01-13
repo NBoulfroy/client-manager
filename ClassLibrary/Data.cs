@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataLibrary
+namespace ClassLibrary
 {
     [Serializable]
     public class Data

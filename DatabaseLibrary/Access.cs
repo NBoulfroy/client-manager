@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.OleDb;
+using ClassLibrary;
 
-namespace DataLibrary
+namespace DatabaseLibrary
 {
     [Serializable]
-    public class Link : Database
+    public class Access : Database
     {
         private ConnectionStringSettings connectionStringSettings;
         private string connectionString;
@@ -14,7 +15,7 @@ namespace DataLibrary
         private string message;
         private Data data;
 
-        public Link(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
+        public Access(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
         {
             this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
             connectionString = this.connectionStringSettings.ConnectionString;

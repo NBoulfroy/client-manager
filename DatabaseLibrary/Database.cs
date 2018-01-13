@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.IO;
 
-namespace DataLibrary
+namespace DatabaseLibrary
 {
     [Serializable]
     public abstract class Database
