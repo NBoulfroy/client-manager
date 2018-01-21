@@ -7,25 +7,14 @@ using ClassLibrary;
 namespace DocumentLibrary
 {
     [Serializable]
-    public class CSV : IDocument
+    public class CSV : Document, IDocument
     {
         StringBuilder stringBuilder;
-        string path;
-        string file;
 
-        public CSV(string path, string file)
+        public CSV(string path, string file) : base(path, file)
         {
             stringBuilder = new StringBuilder();
-            this.path = path;
-            this.file = file;
         }
-
-        #region Accessors
-
-        public string GetPath() { return path; }
-        public string GetFile() { return file; }
-
-        #endregion
 
         #region Methods
 
@@ -56,7 +45,7 @@ namespace DocumentLibrary
                 stringBuilder.AppendLine(item.GetLastName() + "," + item.GetFirstName());
             }
 
-            File.AppendAllText(path + file, stringBuilder.ToString());
+            File.AppendAllText(GetPath() + GetFile(), stringBuilder.ToString());
         }
 
         #endregion

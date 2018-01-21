@@ -6,25 +6,14 @@ using ClassLibrary;
 namespace DocumentLibrary
 {
     [Serializable]
-    public class Spreadsheet : IDocument
+    public class Spreadsheet : Document, IDocument
     {
         Workbook workbook;
-        private string path;
-        private string file;
 
-        public Spreadsheet(string path, string file)
+        public Spreadsheet(string path, string file) : base(path, file)
         {
             workbook = new Workbook();
-            this.path = path;
-            this.file = file;
         }
-
-        #region Accessors
-
-        public string GetPath() { return path; }
-        public string GetFile() { return file; }
-
-        #endregion
 
         #region Method
 
@@ -69,7 +58,7 @@ namespace DocumentLibrary
             }
 
             workbook.Worksheets.Add(worksheet);
-            workbook.Save(path + file);
+            workbook.Save(GetPath() + GetFile());
         }
 
         #endregion
