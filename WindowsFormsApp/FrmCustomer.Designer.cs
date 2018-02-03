@@ -41,63 +41,75 @@
             // 
             // tbxLastName
             // 
-            this.tbxLastName.Location = new System.Drawing.Point(12, 33);
+            this.tbxLastName.Font = new System.Drawing.Font("Century", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbxLastName.Location = new System.Drawing.Point(12, 34);
             this.tbxLastName.Name = "tbxLastName";
-            this.tbxLastName.Size = new System.Drawing.Size(300, 22);
+            this.tbxLastName.Size = new System.Drawing.Size(357, 26);
             this.tbxLastName.TabIndex = 0;
+            this.tbxLastName.TextChanged += new System.EventHandler(this.TbxVerification);
             // 
             // tbxFirstName
             // 
-            this.tbxFirstName.Location = new System.Drawing.Point(12, 87);
+            this.tbxFirstName.Font = new System.Drawing.Font("Century", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbxFirstName.Location = new System.Drawing.Point(12, 88);
             this.tbxFirstName.Name = "tbxFirstName";
-            this.tbxFirstName.Size = new System.Drawing.Size(300, 22);
+            this.tbxFirstName.Size = new System.Drawing.Size(357, 26);
             this.tbxFirstName.TabIndex = 1;
+            this.tbxFirstName.TextChanged += new System.EventHandler(this.TbxVerification);
             // 
             // lblLastName
             // 
             this.lblLastName.AutoSize = true;
+            this.lblLastName.Font = new System.Drawing.Font("Century", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLastName.Location = new System.Drawing.Point(9, 13);
             this.lblLastName.Name = "lblLastName";
-            this.lblLastName.Size = new System.Drawing.Size(78, 17);
+            this.lblLastName.Size = new System.Drawing.Size(85, 18);
             this.lblLastName.TabIndex = 2;
             this.lblLastName.Text = "Last name:";
             // 
             // lblFirstName
             // 
             this.lblFirstName.AutoSize = true;
+            this.lblFirstName.Font = new System.Drawing.Font("Century", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFirstName.Location = new System.Drawing.Point(9, 67);
             this.lblFirstName.Name = "lblFirstName";
-            this.lblFirstName.Size = new System.Drawing.Size(78, 17);
+            this.lblFirstName.Size = new System.Drawing.Size(89, 18);
             this.lblFirstName.TabIndex = 3;
             this.lblFirstName.Text = "First name:";
             // 
             // pbxAccept
             // 
-            this.pbxAccept.Location = new System.Drawing.Point(280, 115);
+            this.pbxAccept.Image = global::WindowsFormsApp.Properties.Resources.accept_disabled_32;
+            this.pbxAccept.Location = new System.Drawing.Point(292, 120);
             this.pbxAccept.Name = "pbxAccept";
             this.pbxAccept.Size = new System.Drawing.Size(32, 32);
             this.pbxAccept.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbxAccept.TabIndex = 4;
+            this.pbxAccept.TabIndex = 5;
             this.pbxAccept.TabStop = false;
             this.pbxAccept.Click += new System.EventHandler(this.PbxAccept_click);
+            this.pbxAccept.MouseLeave += new System.EventHandler(this.PbxAccept_mouseLeave);
+            this.pbxAccept.MouseHover += new System.EventHandler(this.PbxAccept_mouseHover);
             // 
             // pbxCancel
             // 
-            this.pbxCancel.Location = new System.Drawing.Point(235, 115);
+            this.pbxCancel.Image = global::WindowsFormsApp.Properties.Resources.cancel_dark_32;
+            this.pbxCancel.Location = new System.Drawing.Point(337, 120);
             this.pbxCancel.Name = "pbxCancel";
             this.pbxCancel.Size = new System.Drawing.Size(32, 32);
             this.pbxCancel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbxCancel.TabIndex = 5;
+            this.pbxCancel.TabIndex = 4;
             this.pbxCancel.TabStop = false;
             this.pbxCancel.Click += new System.EventHandler(this.PbxCancel_click);
+            this.pbxCancel.MouseLeave += new System.EventHandler(this.PbxCancel_mouseLeave);
+            this.pbxCancel.MouseHover += new System.EventHandler(this.PbxCancel_mouseHover);
             // 
             // FrmCustomer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(326, 158);
-            this.Controls.Add(this.pbxCancel);
+            this.ClientSize = new System.Drawing.Size(381, 161);
             this.Controls.Add(this.pbxAccept);
+            this.Controls.Add(this.pbxCancel);
             this.Controls.Add(this.lblFirstName);
             this.Controls.Add(this.lblLastName);
             this.Controls.Add(this.tbxFirstName);
@@ -108,7 +120,8 @@
             this.MaximizeBox = false;
             this.Name = "FrmCustomer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "customer-manager";
+            this.Text = "Customer-Manager";
+            this.Load += new System.EventHandler(this.FrmCustomer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbxAccept)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxCancel)).EndInit();
             this.ResumeLayout(false);
@@ -122,7 +135,7 @@
         private System.Windows.Forms.TextBox tbxFirstName;
         private System.Windows.Forms.Label lblLastName;
         private System.Windows.Forms.Label lblFirstName;
-        private System.Windows.Forms.PictureBox pbxAccept;
         private System.Windows.Forms.PictureBox pbxCancel;
+        private System.Windows.Forms.PictureBox pbxAccept;
     }
 }

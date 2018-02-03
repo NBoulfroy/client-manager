@@ -63,6 +63,36 @@ namespace WindowsFormsApp.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap accept_dark_32 {
+            get {
+                object obj = ResourceManager.GetObject("accept_dark-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap accept_disabled_32 {
+            get {
+                object obj = ResourceManager.GetObject("accept_disabled-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap accept_light_32 {
+            get {
+                object obj = ResourceManager.GetObject("accept_light-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap add_dark_32 {
             get {
                 object obj = ResourceManager.GetObject("add_dark-32", resourceCulture);
@@ -76,6 +106,26 @@ namespace WindowsFormsApp.Properties {
         internal static System.Drawing.Bitmap add_light_32 {
             get {
                 object obj = ResourceManager.GetObject("add_light-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cancel_dark_32 {
+            get {
+                object obj = ResourceManager.GetObject("cancel_dark-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cancel_light_32 {
+            get {
+                object obj = ResourceManager.GetObject("cancel_light-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +153,19 @@ namespace WindowsFormsApp.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap left_arrow_2 {
+        internal static System.Drawing.Bitmap left_arrow_red_dark {
             get {
-                object obj = ResourceManager.GetObject("left-arrow_2", resourceCulture);
+                object obj = ResourceManager.GetObject("left-arrow-red-dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap left_arrow_red_light {
+            get {
+                object obj = ResourceManager.GetObject("left-arrow-red-light", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +193,19 @@ namespace WindowsFormsApp.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap right_arrow {
+        internal static System.Drawing.Bitmap right_arrow_green_dark {
             get {
-                object obj = ResourceManager.GetObject("right-arrow", resourceCulture);
+                object obj = ResourceManager.GetObject("right-arrow-green-dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap right_arrow_green_light {
+            get {
+                object obj = ResourceManager.GetObject("right-arrow-green-light", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -24,10 +24,102 @@ namespace WindowsFormsApp
             customersSelected = new List<Customer>();
         }
 
+        #region Load methods
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
             access.LoadData();
             LbxCustomers_load();
+        }
+
+        /// <summary>
+        /// Configures and insert data from Access database to lbxCustomers component.
+        /// </summary>
+        private void LbxCustomers_load()
+        {
+            // Define where is from data.
+            lbxCustomers.DataSource = customers;
+            // Value show in listbox.
+            lbxCustomers.DisplayMember = "LastNameFirstName";
+
+            lbxCustomers.ValueMember = "Id";
+        }
+
+        #endregion
+
+        #region List minipulations methods
+
+        /// <summary>
+        /// Refresh ListBox component.
+        /// </summary>
+        /// <param name="listBox">ListBox component</param>
+        /// <param name="list">List which contains customers</param>
+        public void Refresh_listBox(ListBox listBox, List<Customer> list)
+        {
+            // Total clean-up for ListBox component.
+            listBox.DataSource = null;
+
+            // Defines DataSource for ListBox component.
+            listBox.DataSource = list;
+
+            // Displays data in ListBox component.
+            listBox.DisplayMember = "LastNameFirstName";
+            listBox.ValueMember = "Id";
+        }
+
+        /// <summary>
+        /// Refreshes ListBox components.
+        /// </summary>
+        /// <param name="listBox">ListBox component</param>
+        /// <param name="list">List which contains customers</param>
+        /// <param name="customer">Customer object</param>
+        /// <param name="otherListBox">ListBox component</param>
+        /// <param name="otherList">List which contains customers</param>
+        private void Refresh_listboxes(ListBox listBox, List<Customer> list, Customer customer, ListBox otherListBox, List<Customer> otherList)
+        {
+            // Total clean-up for ListBox components.
+            listBox.DataSource = null;
+            otherListBox.DataSource = null;
+
+            // Extracts data from the list.
+            list.Remove(customer);
+
+            // Inserts data in an other list.
+            otherList.Add(customer);
+
+            // Defines DataSource for ListBox components.
+            listBox.DataSource = list;
+            otherListBox.DataSource = otherList;
+
+            // Displays data in ListBox components.
+            listBox.DisplayMember = "LastNameFirstName";
+            listBox.ValueMember = "Id";
+            otherListBox.DisplayMember = "LastNameFirstName";
+            otherListBox.ValueMember = "Id";
+        }
+
+        #endregion
+
+        #region pbxAddCustomer element
+
+        /// <summary>
+        /// Changes the image in Picturebox component when the mouse is on it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PbxAddCustomer_mouseHover(object sender, EventArgs e)
+        {
+            pbxAddCustomer.Image = Properties.Resources.right_arrow_green_light;
+        }
+
+        /// <summary>
+        /// Changes the image in Picturebox component when the mouse is not on it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PbxAddCustomer_mouseLeave(object sender, EventArgs e)
+        {
+            pbxAddCustomer.Image = Properties.Resources.right_arrow_green_dark;
         }
 
         /// <summary>
@@ -40,7 +132,31 @@ namespace WindowsFormsApp
         {
             Customer customer = (Customer)lbxCustomers.SelectedItem;
 
-            Refresh_listbox(lbxCustomers, customers, customer, lbxCustomersSelected, customersSelected);
+            Refresh_listboxes(lbxCustomers, customers, customer, lbxCustomersSelected, customersSelected);
+        }
+
+        #endregion
+
+        #region pbxRemoveCustomer element
+
+        /// <summary>
+        /// Changes the image in Picturebox component when the mouse is on it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PbxRemoveCustomer_mouseHover(object sender, EventArgs e)
+        {
+            pbxRemoveCustomer.Image = Properties.Resources.left_arrow_red_light;
+        }
+
+        /// <summary>
+        /// Changes the image in Picturebox component when the mouse is not on it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PbxRemoveCustomer_mouseLeave(object sender, EventArgs e)
+        {
+            pbxRemoveCustomer.Image = Properties.Resources.left_arrow_red_dark;
         }
 
         /// <summary>
@@ -53,10 +169,12 @@ namespace WindowsFormsApp
         {
             Customer customer = (Customer)lbxCustomersSelected.SelectedItem;
 
-            Refresh_listbox(lbxCustomersSelected, customersSelected, customer, lbxCustomers, customers);
+            Refresh_listboxes(lbxCustomersSelected, customersSelected, customer, lbxCustomers, customers);
         }
 
-        #region pbxAdd
+        #endregion
+
+        #region pbxAdd element
 
         /// <summary>
         /// Changes the image in Picturebox component when the mouse is on it.
@@ -65,7 +183,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxAdd_mouseHover(object sender, EventArgs e)
         {
-            pbxAdd.Image = global::WindowsFormsApp.Properties.Resources.add_light_32;
+            pbxAdd.Image = Properties.Resources.add_light_32;
         }
 
         /// <summary>
@@ -75,7 +193,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxAdd_mouseLeave(object sender, EventArgs e)
         {
-            pbxAdd.Image = global::WindowsFormsApp.Properties.Resources.add_dark_32;
+            pbxAdd.Image = Properties.Resources.add_dark_32;
         }
 
         /// <summary>
@@ -85,13 +203,13 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxAdd_click(object sender, EventArgs e)
         {
-            FrmCustomer frmCustomer = new FrmCustomer(customers);
+            FrmCustomer frmCustomer = new FrmCustomer(this, access, customers);
             frmCustomer.ShowDialog();
         }
 
         #endregion
 
-        #region pbxRemove
+        #region pbxRemove element
 
         /// <summary>
         /// Changes the image in Picturebox component when the mouse is on it.
@@ -100,7 +218,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemove_mouseHover(object sender, EventArgs e)
         {
-            pbxRemove.Image = global::WindowsFormsApp.Properties.Resources.delete_light_32;
+            pbxRemove.Image = Properties.Resources.delete_light_32;
         }
 
         /// <summary>
@@ -110,7 +228,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemove_mouseLeave(object sender, EventArgs e)
         {
-            pbxRemove.Image = global::WindowsFormsApp.Properties.Resources.delete_dark_32;
+            pbxRemove.Image = Properties.Resources.delete_dark_32;
         }
 
         /// <summary>
@@ -120,12 +238,27 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemove_click(object sender, EventArgs e)
         {
+            DialogResult result = MessageBox.Show("Are you sure you want to delete this customer?", "Confirm the deletation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
+            if (result == DialogResult.Yes)
+            {
+                // Gets the currently customer selected in listbox component.
+                Customer customer = (Customer)lbxCustomers.SelectedItem;
+
+                // Delete the customer in database and in the software memory.
+                access.DeleteCustomer(customer.GetId());
+
+                // Delete the customer in customers list.
+                customers.Remove(customer);
+
+                // Refresh the ListBox component.
+                Refresh_listBox(lbxCustomers, customers);
+            }
         }
 
         #endregion
 
-        #region pbxSave
+        #region pbxSave element
 
         /// <summary>
         /// Changes the image in Picturebox component when the mouse is on it.
@@ -134,7 +267,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxSave_mouseHover(object sender, EventArgs e)
         {
-            pbxSave.Image = global::WindowsFormsApp.Properties.Resources.save_light_32;
+            pbxSave.Image = Properties.Resources.save_light_32;
         }
 
         /// <summary>
@@ -144,7 +277,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxSave_mouseLeave(object sender, EventArgs e)
         {
-            pbxSave.Image = global::WindowsFormsApp.Properties.Resources.save_dark_32;
+            pbxSave.Image = Properties.Resources.save_dark_32;
         }
 
         /// <summary>
@@ -184,7 +317,7 @@ namespace WindowsFormsApp
 
         #endregion
 
-        #region pbxPrint
+        #region pbxPrint element
 
         /// <summary>
         /// Changes the image in Picturebox component when the mouse is on it.
@@ -193,7 +326,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxPrint_mouseHover(object sender, EventArgs e)
         {
-            pbxPrint.Image = global::WindowsFormsApp.Properties.Resources.print_light_32;
+            pbxPrint.Image = Properties.Resources.print_light_32;
         }
 
         /// <summary>
@@ -203,7 +336,7 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxPrint_mouseLeave(object sender, EventArgs e)
         {
-            pbxPrint.Image = global::WindowsFormsApp.Properties.Resources.print_dark_32;
+            pbxPrint.Image = Properties.Resources.print_dark_32;
         }
 
         /// <summary>
@@ -213,55 +346,23 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxPrint_click(object sender, EventArgs e)
         {
+            // Displays new window.
             printDialog.ShowDialog();
         }
 
         #endregion
 
-        #region List minipulations
+        #region Message method
 
         /// <summary>
-        /// Configures and insert data from Access database to lbxCustomers component.
+        /// Displays message in MessageBox window component if no customers is loaded from Access database.
         /// </summary>
-        private void LbxCustomers_load()
+        private void DisplayNoCustomers()
         {
-            // Define where is from data.
-            lbxCustomers.DataSource = customers;
-            // Value show in listbox.
-            lbxCustomers.DisplayMember = "LastNameFirstName";
-
-            lbxCustomers.ValueMember = "Id";
-        }
-
-        /// <summary>
-        /// Refreshes ListBox components.
-        /// </summary>
-        /// <param name="listBox">ListBox component</param>
-        /// <param name="list">List which contains customers</param>
-        /// <param name="customer">Customer object</param>
-        /// <param name="otherListBox">ListBox component</param>
-        /// <param name="otherList">List which contains customers</param>
-        private void Refresh_listbox(ListBox listBox, List<Customer> list, Customer customer, ListBox otherListBox, List<Customer> otherList)
-        {
-            // Total clean-up for ListBox components.
-            listBox.DataSource = null;
-            otherListBox.DataSource = null;
-
-            // Extracts data from the list.
-            list.Remove(customer);
-
-            // Inserts data in an other list.
-            otherList.Add(customer);
-
-            // Defines DataSource for ListBox components.
-            listBox.DataSource = list;
-            otherListBox.DataSource = otherList;
-
-            // Displays data in ListBox components.
-            listBox.DisplayMember = "LastNameFirstName";
-            listBox.ValueMember = "Id";
-            otherListBox.DisplayMember = "LastNameFirstName";
-            otherListBox.ValueMember = "Id";
+            if (customers.Count == 0)
+            {
+                MessageBox.Show("No customers in database.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         #endregion

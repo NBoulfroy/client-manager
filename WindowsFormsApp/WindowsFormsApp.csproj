@@ -142,6 +142,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="if_vector_65_16_473774.ico" />
+    <None Include="Resources\accept_disabled-32.png" />
+    <None Include="Resources\accept_light-32.png" />
+    <None Include="Resources\accept_dark-32.png" />
+    <None Include="Resources\cancel_light-32.png" />
+    <None Include="Resources\cancel_dark-32.png" />
+    <None Include="Resources\right-arrow-green-light.png" />
+    <None Include="Resources\right-arrow-green-dark.png" />
+    <None Include="Resources\left-arrow-red-light.png" />
+    <None Include="Resources\left-arrow-red-dark.png" />
     <None Include="Resources\save_light-32.png" />
     <None Include="Resources\save_dark-32.png" />
     <None Include="Resources\print_light-32.png" />
@@ -150,8 +159,6 @@
     <None Include="Resources\delete_dark-32.png" />
     <None Include="Resources\add_light-32.png" />
     <None Include="Resources\add_dark-32.png" />
-    <None Include="Resources\left-arrow_2.png" />
-    <None Include="Resources\right-arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
