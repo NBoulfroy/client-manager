@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Drawing;
 using ClassLibrary;
 using DatabaseLibrary;
 using DocumentLibrary;
@@ -30,6 +31,7 @@ namespace WindowsFormsApp
         {
             access.LoadData();
             LbxCustomers_load();
+            ListBoxesVerifications();
         }
 
         /// <summary>
@@ -100,6 +102,84 @@ namespace WindowsFormsApp
 
         #endregion
 
+        #region ListBox manipulations
+
+        /// <summary>
+        /// Controls simultaneously if two ListBoxes components.
+        /// </summary>
+        private void ListBoxesVerifications()
+        {
+            ListBoxVerification(lbxCustomersSelected, pbxRemoveCustomer);
+            ListBoxVerification(lbxCustomers, pbxAddCustomer);
+        }
+
+        /// <summary>
+        /// Controls if the ListBox component is empty.
+        /// </summary>
+        /// <param name="listBox"></param>
+        /// <param name="pictureBox"></param>
+        private void ListBoxVerification(ListBox listBox, PictureBox pictureBox)
+        {
+            if (listBox.Items.Count == 0 )
+            {
+                pictureBox.Enabled = false;
+            }
+            else
+            {
+                pictureBox.Enabled = true;
+            }
+        }
+
+        #endregion
+
+        #region lbxCustomers element
+
+        /// <summary>
+        /// Double click on an element in ListBox lbxCustomers component.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LbxCustomers_mouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // Listboxes components content verification.
+            ListBoxesVerifications();
+
+            // Gets the selected custumer from lbxCustomers component.
+            Customer customer = (Customer)lbxCustomers.SelectedItem;
+
+            // Refreshes two ListBoxes components.
+            Refresh_listboxes(lbxCustomers, customers, customer, lbxCustomersSelected, customersSelected);
+
+            // Listboxes components content verification.
+            ListBoxesVerifications();
+        }
+
+        #endregion
+
+        #region lbxcustomersSelected element
+
+        /// <summary>
+        /// Double click on an element in ListBox lbxCustomersSelected component.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LbxCustomersSelected_mouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // Listboxes components content verification.
+            ListBoxesVerifications();
+
+            // Gets the selected custumer from lbxCustomersSelected component.
+            Customer customer = (Customer)lbxCustomersSelected.SelectedItem;
+
+            // Refreshes two ListBoxes components.
+            Refresh_listboxes(lbxCustomersSelected, customersSelected, customer, lbxCustomers, customers);
+
+            // Listboxes components content verification.
+            ListBoxesVerifications();
+        }
+
+        #endregion
+
         #region pbxAddCustomer element
 
         /// <summary>
@@ -130,9 +210,17 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxAddCustomer_click(object sender, EventArgs e)
         {
+            // Listboxes components content verification.
+            ListBoxesVerifications();
+
+            // Gets the selected custumer from lbxCustomersSelected component.
             Customer customer = (Customer)lbxCustomers.SelectedItem;
 
+            // Refreshes two ListBoxes components.
             Refresh_listboxes(lbxCustomers, customers, customer, lbxCustomersSelected, customersSelected);
+
+            // Listboxes components content verification.
+            ListBoxesVerifications();
         }
 
         #endregion
@@ -167,9 +255,17 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemoveCustomer_click(object sender, EventArgs e)
         {
+            // Listboxes components content verification.
+            ListBoxesVerifications();
+
+            // Gets the selected custumer from lbxCustomersSelected component.
             Customer customer = (Customer)lbxCustomersSelected.SelectedItem;
 
+            // Refreshes two ListBoxes components.
             Refresh_listboxes(lbxCustomersSelected, customersSelected, customer, lbxCustomers, customers);
+
+            // Listboxes components content verification.
+            ListBoxesVerifications();
         }
 
         #endregion
@@ -347,21 +443,38 @@ namespace WindowsFormsApp
         private void PbxPrint_click(object sender, EventArgs e)
         {
             // Displays new window.
-            printDialog.ShowDialog();
+            DialogResult result = printDialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                printDocument.Print();
+            }
         }
 
-        #endregion
-
-        #region Message method
-
         /// <summary>
-        /// Displays message in MessageBox window component if no customers is loaded from Access database.
+        /// Creates new page to PrintDialog component.
         /// </summary>
-        private void DisplayNoCustomers()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PrintDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
-            if (customers.Count == 0)
+            Font font = new Font("Arial", 12);
+            SolidBrush solidBrush = new SolidBrush(Color.Black);
+            StringFormat stringFormat = new StringFormat
             {
-                MessageBox.Show("No customers in database.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Alignment = StringAlignment.Near
+            };
+            int x = 0;
+            int y = 1;
+            int width = 350;
+            int height = 25;
+
+            foreach (Customer customer in customersSelected)
+            {
+                Rectangle rectangle = new Rectangle(x, y, width, height);
+                string text = customer.GetLastName() + " " + customer.GetFirstName();
+                e.Graphics.DrawString(text, font, solidBrush, rectangle, stringFormat);
+                y = y + height;
             }
         }
 
