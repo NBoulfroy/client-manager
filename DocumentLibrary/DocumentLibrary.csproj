@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSV.cs" />
+    <Compile Include="Document.cs" />
     <Compile Include="Spreadsheet.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

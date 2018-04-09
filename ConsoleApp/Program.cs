@@ -183,7 +183,7 @@ namespace ConsoleApp
         /// <param name="file"></param>
         static void Spreadsheet(string file)
         {
-            // Spreadsheet object 
+            // ODS object 
             Spreadsheet spreadsheet = new Spreadsheet(desktopPath, file);
 
             // File existing verification.
@@ -195,14 +195,7 @@ namespace ConsoleApp
             // File creation.
             spreadsheet.DocumentBuilder(link.GetData().GetCustomers());
 
-            if (file == "spreadsheet.xls")
-            {
-                Console.WriteLine("Warning: if you try to open this file,");
-                Console.WriteLine("Excel will believe the file is not valid but");
-                Console.WriteLine("you can read this file.");
-            }
-
-            Console.WriteLine("Spreadsheet file created with success on desktop.");
+            Console.WriteLine("\nSpreadsheet file created with success on desktop.");
         }
     }
 }
