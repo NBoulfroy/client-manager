@@ -123,10 +123,12 @@ namespace WindowsFormsApp
             if (listBox.Items.Count == 0 )
             {
                 pictureBox.Enabled = false;
+                listBox.Enabled = false;
             }
             else
             {
                 pictureBox.Enabled = true;
+                listBox.Enabled = true;
             }
         }
 
@@ -141,9 +143,6 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void LbxCustomers_mouseDoubleClick(object sender, MouseEventArgs e)
         {
-            // Listboxes components content verification.
-            ListBoxesVerifications();
-
             // Gets the selected custumer from lbxCustomers component.
             Customer customer = (Customer)lbxCustomers.SelectedItem;
 
@@ -165,9 +164,6 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void LbxCustomersSelected_mouseDoubleClick(object sender, MouseEventArgs e)
         {
-            // Listboxes components content verification.
-            ListBoxesVerifications();
-
             // Gets the selected custumer from lbxCustomersSelected component.
             Customer customer = (Customer)lbxCustomersSelected.SelectedItem;
 

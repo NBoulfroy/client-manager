@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.OleDb;
 using ClassLibrary;
+using System.Windows.Forms;
 
 namespace DatabaseLibrary
 {
@@ -13,6 +14,7 @@ namespace DatabaseLibrary
         string file;
         string extension;
         private string message;
+        private DialogResult messageBoxResult;
         private Data data;
 
         public Access(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
@@ -73,10 +75,9 @@ namespace DatabaseLibrary
                     }
                     reader.Close();
                 }
-                catch (Exception e)
+                catch
                 {
-                    message = e.Message.ToString();
-                    // message = "An error is occured, please try again or contact team support.";
+                    messageBoxResult = MessageBox.Show("An error is occurend, please try again or contact team support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
                 finally
                 {
@@ -101,40 +102,41 @@ namespace DatabaseLibrary
             // Query Statement
             string query = "INSERT INTO customer (customer_lastName, customer_firstName) VALUES (@lastName, @firstName)";
 
-        using (OleDbConnection connection = new OleDbConnection(connectionString))
-        {
-            OleDbCommand command = new OleDbCommand(query, connection)
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
-                CommandType = System.Data.CommandType.Text
-            };
-            command.Parameters.AddWithValue("@lastName", surname);
-            command.Parameters.AddWithValue("@firstName", name);
+                OleDbCommand command = new OleDbCommand(query, connection)
+                {
+                    CommandType = System.Data.CommandType.Text
+                };
+                command.Parameters.AddWithValue("@lastName", surname);
+                command.Parameters.AddWithValue("@firstName", name);
 
-            try
-            {
-                // Connection to the database.
-                connection.Open();
-                // Execute the first query write previously.
-                command.ExecuteNonQuery();
-                // Last inserted identity recuperation.
-                command.CommandText = "SELECT @@IDENTITY";
-                int id = (int)command.ExecuteScalar();
+                try
+                {
+                    // Connection to the database.
+                    connection.Open();
+                    // Execute the first query write previously.
+                    command.ExecuteNonQuery();
+                    // Last inserted identity recuperation.
+                    command.CommandText = "SELECT @@IDENTITY";
+                    int id = (int)command.ExecuteScalar();
 
-                // Customer added in memory.
-                Customer customer = new Customer(id, surname, name);
-                data.AddCustomer(customer);
-                message = "Customer added with success.";
+                    // Customer added in memory.
+                    Customer customer = new Customer(id, surname, name);
+                    data.AddCustomer(customer);
+                    message = "Customer added with success.";
+                }
+                catch
+                {
+                    // message = e.Message.ToString();
+                    message = "Error : an error is occurend, please try again or contact team support.";
+                    messageBoxResult = MessageBox.Show("An error is occurend, please try again or contact team support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
-            catch (Exception e)
-            {
-                message = e.Message.ToString();
-                // message = "An error is occured, please try again or contact team support.";
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
 
             return message;
         }
@@ -175,10 +177,10 @@ namespace DatabaseLibrary
                     data.UpdateCustomer(id, surname, name);
                     message = "Customer updated with success.";
                 }
-                catch(Exception e)
+                catch
                 {
-                    message = e.Message.ToString();
-                    // message = "An error is occured, please try again or contact team support.";
+                    message = "Error : an error is occurend, please try again or contact team support.";
+                    messageBoxResult = MessageBox.Show("An error is occurend, please try again or contact team support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
                 finally
                 {
@@ -219,8 +221,8 @@ namespace DatabaseLibrary
                 }
                 catch (Exception e)
                 {
-                    message = e.Message.ToString();
-                    // message = "An error is occured, please try again or contact team support.";
+                    message = "Error : an error is occurend, please try again or contact team support.";
+                    messageBoxResult = MessageBox.Show("An error is occurend, please try again or contact team support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
                 finally
                 {
