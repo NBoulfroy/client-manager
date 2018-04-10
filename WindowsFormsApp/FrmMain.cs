@@ -107,7 +107,7 @@ namespace WindowsFormsApp
         /// <summary>
         /// Controls simultaneously if two ListBoxes components.
         /// </summary>
-        private void ListBoxesVerifications()
+        public void ListBoxesVerifications()
         {
             ListBoxVerification(lbxCustomersSelected, pbxRemoveCustomer);
             ListBoxVerification(lbxCustomers, pbxAddCustomer);

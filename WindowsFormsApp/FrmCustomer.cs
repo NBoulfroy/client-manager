@@ -70,6 +70,9 @@ namespace WindowsFormsApp
                 // Refreshes the main WinForm which contains customers list.
                 frmMain.Refresh_listBox(frmMain.lbxCustomers, list);
 
+                // Verifications about all listboxes components in main WinForm.
+                frmMain.ListBoxesVerifications();
+
                 // Hide this window.
                 Hide();
                 // Close this window.
