@@ -206,14 +206,21 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxAddCustomer_click(object sender, EventArgs e)
         {
-            // Gets the selected custumer from lbxCustomersSelected component.
-            Customer customer = (Customer)lbxCustomers.SelectedItem;
+            if (lbxCustomers.SelectedItem == null)
+            {
+                MessageBox.Show("No customer selected.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                // Gets the selected custumer from lbxCustomersSelected component.
+                Customer customer = (Customer)lbxCustomers.SelectedItem;
 
-            // Refreshes two ListBoxes components.
-            Refresh_listboxes(lbxCustomers, customers, customer, lbxCustomersSelected, customersSelected);
+                // Refreshes two ListBoxes components.
+                Refresh_listboxes(lbxCustomers, customers, customer, lbxCustomersSelected, customersSelected);
 
-            // Listboxes components content verification.
-            ListBoxesVerifications();
+                // Listboxes components content verification.
+                ListBoxesVerifications();
+            }
         }
 
         #endregion
@@ -248,6 +255,11 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemoveCustomer_click(object sender, EventArgs e)
         {
+            if (lbxCustomersSelected.SelectedItem == null)
+            {
+                MessageBox.Show("No customer selected.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             // Gets the selected custumer from lbxCustomersSelected component.
             Customer customer = (Customer)lbxCustomersSelected.SelectedItem;
 
