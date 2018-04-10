@@ -206,9 +206,6 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxAddCustomer_click(object sender, EventArgs e)
         {
-            // Listboxes components content verification.
-            ListBoxesVerifications();
-
             // Gets the selected custumer from lbxCustomersSelected component.
             Customer customer = (Customer)lbxCustomers.SelectedItem;
 
@@ -251,9 +248,6 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemoveCustomer_click(object sender, EventArgs e)
         {
-            // Listboxes components content verification.
-            ListBoxesVerifications();
-
             // Gets the selected custumer from lbxCustomersSelected component.
             Customer customer = (Customer)lbxCustomersSelected.SelectedItem;
 
@@ -330,21 +324,29 @@ namespace WindowsFormsApp
         /// <param name="e"></param>
         private void PbxRemove_click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Are you sure you want to delete this customer?", "Confirm the deletation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
+            // Controls if the database contains customer(s).
+            if (lbxCustomers.Items.Count < 1 || lbxCustomers.SelectedItem == null)
             {
-                // Gets the currently customer selected in listbox component.
-                Customer customer = (Customer)lbxCustomers.SelectedItem;
+                MessageBox.Show("No customer in database or selected.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this customer?", "Confirm the deletation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                // Delete the customer in database and in the software memory.
-                access.DeleteCustomer(customer.GetId());
+                if (result == DialogResult.Yes)
+                {
+                    // Gets the currently customer selected in listbox component.
+                    Customer customer = (Customer)lbxCustomers.SelectedItem;
 
-                // Delete the customer in customers list.
-                customers.Remove(customer);
+                    // Delete the customer in database and in the software memory.
+                    access.DeleteCustomer(customer.GetId());
 
-                // Refresh the ListBox component.
-                Refresh_listBox(lbxCustomers, customers);
+                    // Delete the customer in customers list.
+                    customers.Remove(customer);
+
+                    // Refresh the ListBox component.
+                    Refresh_listBox(lbxCustomers, customers);
+                }
             }
         }
 
