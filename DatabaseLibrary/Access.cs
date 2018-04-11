@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.OleDb;
-using ClassLibrary;
 using System.Windows.Forms;
 
 namespace DatabaseLibrary
@@ -15,7 +14,6 @@ namespace DatabaseLibrary
         string extension;
         private string message;
         private DialogResult messageBoxResult;
-        private Data data;
 
         public Access(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
         {
@@ -23,7 +21,6 @@ namespace DatabaseLibrary
             connectionString = this.connectionStringSettings.ConnectionString;
             this.file = file;
             this.extension = extension;
-            data = new Data();
         }
 
         #region Accessors
