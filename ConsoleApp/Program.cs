@@ -1,22 +1,22 @@
 ﻿using System;
 using System.IO;
-using ClassLibrary;
 using DatabaseLibrary;
+using DataLibrary;
 using DocumentLibrary;
 
 namespace ConsoleApp
 {
     class Program
     {
-        private static Access link = new Access();
-        static string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\";
+        private static Database link = new Database();
+        private static readonly string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\";
 
         static void Main(string[] args)
         {
             link.LoadData();
             ShowMenu();
             string choice = Console.ReadLine();
-            while (choice != "8")
+            while (choice != "9")
             {
                 Console.Clear();
                 switch (choice)
@@ -43,10 +43,13 @@ namespace ConsoleApp
                         CSV();
                         break;
                     case "6":
-                        Spreadsheet("spreadsheet.ods");
+                        Spreadsheet("ods", "spreadsheet.ods");
                         break;
                     case "7":
-                        Spreadsheet("spreadsheet.xls");
+                        Spreadsheet("excel", "spreadsheet.xls");
+                        break;
+                    case "8":
+                        Spreadsheet("excel", "spreadsheet.xlsx");
                         break;
                 }
                 Console.WriteLine("\nPress any other key to return to the menu ...");
@@ -58,7 +61,7 @@ namespace ConsoleApp
         }
 
         /// <summary>
-        /// Display console application module.
+        /// Displays console application module.
         /// </summary>
         static void ShowMenu()
         {
@@ -72,13 +75,14 @@ namespace ConsoleApp
             Console.WriteLine("5. Print CSV file");
             Console.WriteLine("6. Print ODS file");
             Console.WriteLine("7. Print xls file");
-            Console.WriteLine("8. Exit");
+            Console.WriteLine("8. Print xlsx file");
+            Console.WriteLine("9. Exit");
             Console.WriteLine("------------------------------------");
             Console.Write("Choice: ");
         }
 
         /// <summary>
-        /// Show in list all customers load from Access database.
+        /// Shows in list all customers load from Access database.
         /// </summary>
         static void ShowCustomers()
         {
@@ -87,12 +91,12 @@ namespace ConsoleApp
 
             foreach (Customer customer in link.GetData().GetCustomers())
             {
-                Console.WriteLine("{0}. {1} {2}", customer.GetId(), customer.GetLastName(), customer.GetFirstName());
+                Console.WriteLine("{0}. {1} {2}", customer.Customer_id, customer.Customer_lastName, customer.Customer_firstName);
             }
         }
 
         /// <summary>
-        /// Add customer in memory and in Access database.
+        /// Adds customer in memory and in Access database.
         /// </summary>
         static void AddCustomer()
         {
@@ -103,7 +107,7 @@ namespace ConsoleApp
 
             if (lastName != null && lastName != "" && lastName != " " && firstName != null && firstName != "" && firstName != " ")
             {
-                Console.WriteLine("\n" + link.AddCustomer(lastName, firstName));
+                Console.WriteLine(link.AddCustomer(lastName, firstName));
             }
             else
             {
@@ -112,7 +116,7 @@ namespace ConsoleApp
         }
 
         /// <summary>
-        /// Update customer in memory and in Access database.
+        /// Updates a customer in memory and in Access database.
         /// </summary>
         static void UpdateCustomer()
         {
@@ -136,7 +140,7 @@ namespace ConsoleApp
         }
 
         /// <summary>
-        /// Delete customer in memory and in Access database.
+        /// Deletes a customer in memory and in Access database.
         /// </summary>
         static void DeleteCustomer()
         {
@@ -145,7 +149,7 @@ namespace ConsoleApp
 
             if (int.TryParse(id, out int identity))
             {
-                Console.WriteLine("\n" + link.DeleteCustomer(identity));
+                Console.WriteLine("\n" + link.RemoveCustomer(Convert.ToInt32(identity)));
             }
             else
             {
@@ -154,7 +158,7 @@ namespace ConsoleApp
         }
         
         /// <summary>
-        /// Create CSV file (.CSV).
+        /// Creates CSV file (.CSV).
         /// </summary>
         static void CSV()
         {
@@ -178,22 +182,31 @@ namespace ConsoleApp
         }
 
         /// <summary>
-        /// Create spreadsheet file (.ODS, .XLS & .XLSX).
+        /// Creates spreadsheet file (.ODS, .XLS & .XLSX).
         /// </summary>
         /// <param name="file"></param>
-        static void Spreadsheet(string file)
+        static void Spreadsheet(string type, string file)
         {
-            // ODS object 
-            Spreadsheet spreadsheet = new Spreadsheet(desktopPath, file);
-
             // File existing verification.
-            if (File.Exists(spreadsheet.GetPath() + spreadsheet.GetFile()))
+            if (File.Exists(desktopPath + file))
             {
-                File.Delete(spreadsheet.GetPath() + spreadsheet.GetFile());
+                File.Delete(desktopPath + file);
             }
 
-            // File creation.
-            spreadsheet.DocumentBuilder(link.GetData().GetCustomers());
+            switch (type)
+            {
+                case "ods":
+                    // OpenDocument Spreadsheet.
+                    OpenDocument spreadsheet = new OpenDocument(desktopPath, file);
+                    spreadsheet.DocumentBuilder(link.GetData().GetCustomers());
+                    break;
+                case "excel":
+                    // Microsoft Excel spreadsheet.
+                    Excel excel = new Excel(desktopPath, file);
+                    // File creation.
+                    excel.DocumentBuilder(link.GetData().GetCustomers());
+                    break;
+            }
 
             Console.WriteLine("\nSpreadsheet file created with success on desktop.");
         }
