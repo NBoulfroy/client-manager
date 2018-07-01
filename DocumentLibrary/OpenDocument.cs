@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using ExcelLibrary.SpreadSheet;
-using ClassLibrary;
+using DataLibrary;
 
 namespace DocumentLibrary
 {
     [Serializable]
-    public class Spreadsheet : Document, IDocument
+    public class OpenDocument : Document, IDocument
     {
         Workbook workbook;
 
-        public Spreadsheet(string path, string file) : base(path, file)
+        public OpenDocument(string path, string file) : base(path, file)
         {
             workbook = new Workbook();
         }
@@ -48,10 +48,10 @@ namespace DocumentLibrary
                     worksheet = new Worksheet("sheet" + i);
                 }
 
-                worksheet.Cells[j, k] = new Cell(customer.GetLastName());
+               worksheet.Cells[j, k] = new Cell(customer.Customer_lastName);
                 worksheet.Cells.ColumnWidth[(ushort)j, (ushort)k] = (ushort)10000;
                 k++;
-                worksheet.Cells[j, k] = new Cell(customer.GetFirstName());
+                worksheet.Cells[j, k] = new Cell(customer.Customer_firstName);
                 worksheet.Cells.ColumnWidth[(ushort)j, (ushort)k] = (ushort)10000;
                 j++;
                 k--;

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
-using ClassLibrary;
+using DataLibrary;
 
 namespace DocumentLibrary
 {
@@ -42,7 +42,7 @@ namespace DocumentLibrary
         {
             foreach (Customer item in items)
             {
-                stringBuilder.AppendLine(item.GetLastName() + "," + item.GetFirstName());
+                stringBuilder.AppendLine(item.Customer_lastName + "," + item.Customer_firstName);
             }
 
             File.AppendAllText(GetPath() + GetFile(), stringBuilder.ToString());
