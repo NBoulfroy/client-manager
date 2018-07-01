@@ -28,6 +28,10 @@ namespace DataLibrary
 
         #region Methods
 
+        /// <summary>
+        /// Adds customer into the Customer list.
+        /// </summary>
+        /// <param name="customer">A customer object</param>
         public void AddCustomer(Customer customer)
         {
             customers.Add(customer);
@@ -44,6 +48,12 @@ namespace DataLibrary
             }
         }
 
+        /// <summary>
+        /// Updates a customer into the Customer list.
+        /// </summary>
+        /// <param name="id">Customer's identity</param>
+        /// <param name="lastName">Customer's name</param>
+        /// <param name="firstName">Customer's christian name</param>
         public void UpdateCustomer(int id, string lastName, string firstName)
         {
             foreach (Customer customer in customers)

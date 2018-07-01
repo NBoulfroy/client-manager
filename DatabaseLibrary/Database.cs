@@ -16,6 +16,12 @@ namespace DatabaseLibrary
         private string message;
         private Data data;
 
+        /// <summary>
+        /// Database's contructor.
+        /// </summary>
+        /// <param name="connectionStringSettings">Attribute name into the "connectionStrings" node</param>
+        /// <param name="file">File name of the local database</param>
+        /// <param name="extension">File extension of the local database</param>
         public Database(string connectionStringSettings = "sgbd", string file = "database", string extension = ".mdb")
         {
             this.connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringSettings];
@@ -68,8 +74,8 @@ namespace DatabaseLibrary
         /// <summary>
         /// Adds a customer into database and in memory.
         /// </summary>
-        /// <param name="lastName"></param>
-        /// <param name="firstName"></param>
+        /// <param name="lastName">Person's name</param>
+        /// <param name="firstName">Person's christian name</param>
         /// <returns></returns>
         public string AddCustomer(string lastName, string firstName)
         {
@@ -115,9 +121,9 @@ namespace DatabaseLibrary
         /// <summary>
         /// Updates a customer into database and in memory.
         /// </summary>
-        /// <param name="identity"></param>
-        /// <param name="lastName"></param>
-        /// <param name="firstName"></param>
+        /// <param name="identity">Person's id into the local database<param>
+        /// <param name="lastName">Person's name</param>
+        /// <param name="firstName">Person's christian name</param>
         /// <returns></returns>
         public string UpdateCustomer(int identity, string lastName, string firstName)
         {
@@ -153,7 +159,7 @@ namespace DatabaseLibrary
         /// <summary>
         /// Removes a customer into database and in memory.
         /// </summary>
-        /// <param name="identity"></param>
+        /// <param name="identity">Person's id into the local database</param>
         /// <returns></returns>
         public string RemoveCustomer(int identity)
         {
@@ -189,7 +195,7 @@ namespace DatabaseLibrary
         /// <summary>
         /// Returns string like "Nicolas" or "Pierre-Robert".
         /// </summary>
-        /// <param name="firstName"></param>
+        /// <param name="firstName">Person's christian name</param>
         /// <returns></returns>
         private static string FirstNameManipulation(string firstName)
         {
@@ -223,7 +229,7 @@ namespace DatabaseLibrary
         /// <summary>
         /// Returns string like "BOULFROY", "DE MONTMORENCY" and "DUPONT-SMITH.
         /// </summary>
-        /// <param name="lastName"></param>
+        /// <param name="lastName">Person's name</param>
         /// <returns></returns>
         private static string LastNameManipulation(string lastName)
         {
