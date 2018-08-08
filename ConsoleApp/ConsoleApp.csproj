@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,7 +24,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -53,15 +53,6 @@
     <ApplicationIcon>if_terminal_285695.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClassLibrary">
-      <HintPath>..\ClassLibrary\bin\Debug\ClassLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="DatabaseLibrary">
-      <HintPath>..\DatabaseLibrary\bin\Debug\DatabaseLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentLibrary">
-      <HintPath>..\DocumentLibrary\bin\Debug\DocumentLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -92,6 +83,20 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseLibrary\DatabaseLibrary.csproj">
+      <Project>{904e361b-e256-4e36-a7b9-ef7a96458de3}</Project>
+      <Name>DatabaseLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLibrary\DataLibrary.csproj">
+      <Project>{094c05be-c009-4b90-a2d4-637861b56075}</Project>
+      <Name>DataLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DocumentLibrary\DocumentLibrary.csproj">
+      <Project>{a3ecece2-43c6-43a2-9daf-059fba57d406}</Project>
+      <Name>DocumentLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

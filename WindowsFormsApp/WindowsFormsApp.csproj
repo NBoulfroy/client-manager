@@ -75,9 +75,6 @@
     <ApplicationIcon>if_vector_65_16_473774.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClassLibrary">
-      <HintPath>..\ClassLibrary\bin\Debug\ClassLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="DatabaseLibrary">
       <HintPath>..\DatabaseLibrary\bin\Debug\DatabaseLibrary.dll</HintPath>
     </Reference>

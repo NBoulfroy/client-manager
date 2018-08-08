@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary
+namespace DataLibrary
 {
     [Serializable]
     public class Data
@@ -16,6 +16,7 @@ namespace ClassLibrary
         #region Accessor
 
         public List<Customer> GetCustomers() { return customers; }
+        public void SetCustomers(List<Customer> customers) { this.customers = customers; }
 
         #endregion
 
@@ -27,6 +28,10 @@ namespace ClassLibrary
 
         #region Methods
 
+        /// <summary>
+        /// Adds customer into the Customer list.
+        /// </summary>
+        /// <param name="customer">A customer object</param>
         public void AddCustomer(Customer customer)
         {
             customers.Add(customer);
@@ -36,22 +41,28 @@ namespace ClassLibrary
         {
             for (int i = 0; i < customers.Count; i++)
             {
-                if (customers[i].GetId() == id)
+                if (customers[i].Customer_id == id)
                 {
                     customers.Remove(customers[i]);
                 }
             }
         }
 
+        /// <summary>
+        /// Updates a customer into the Customer list.
+        /// </summary>
+        /// <param name="id">Customer's identity</param>
+        /// <param name="lastName">Customer's name</param>
+        /// <param name="firstName">Customer's christian name</param>
         public void UpdateCustomer(int id, string lastName, string firstName)
         {
             foreach (Customer customer in customers)
             {
-                if (customer.GetId() == id)
+                if (customer.Customer_id == id)
                 {
-                    customer.SetId(id);
-                    customer.SetLastName(lastName.ToUpper());
-                    customer.SetFirstName(firstName);
+                    customer.Customer_id = id;
+                    customer.Customer_lastName = lastName.ToUpper();
+                    customer.Customer_firstName = firstName;
                 }
             }
         }
