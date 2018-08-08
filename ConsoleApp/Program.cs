@@ -221,7 +221,7 @@ namespace ConsoleApp
         /// Creates a portable document (.pdf).
         /// </summary>
         /// <param name="file"></param>
-        public void Pdf(string file)
+        static void Pdf(string file)
         {
             // File existing verification.
             if (File.Exists(desktopPath + file))
