@@ -80,9 +80,10 @@ namespace ConsoleApp
             Console.WriteLine("4. Delete customer");
             Console.WriteLine("5. Print CSV file");
             Console.WriteLine("6. Print ODS file");
-            Console.WriteLine("7. Print xls file");
-            Console.WriteLine("8. Print xlsx file");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("7. Print XLS file");
+            Console.WriteLine("8. Print XLSX file");
+            Console.WriteLine("9. Print PDF file");
+            Console.WriteLine("10. Exit");
             Console.WriteLine("------------------------------------");
             Console.Write("Choice: ");
         }
@@ -234,7 +235,7 @@ namespace ConsoleApp
             // File creation.
             pdf.DocumentBuilder(link.GetData().GetCustomers());
 
-            Console.WriteLine("\nSpreadsheet file created with success on desktop.");
+            Console.WriteLine("\nPortable document file (PDF) created with success on desktop.");
         }
     }
 }
