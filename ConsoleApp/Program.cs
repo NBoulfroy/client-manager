@@ -16,7 +16,7 @@ namespace ConsoleApp
             link.LoadData();
             ShowMenu();
             string choice = Console.ReadLine();
-            while (choice != "9")
+            while (choice != "10")
             {
                 Console.Clear();
                 switch (choice)
@@ -51,6 +51,12 @@ namespace ConsoleApp
                     case "8":
                         Spreadsheet("excel", "spreadsheet.xlsx");
                         break;
+                    case "9":
+                        Pdf("customerList");
+                        break;
+
+
+
                 }
                 Console.WriteLine("\nPress any other key to return to the menu ...");
                 Console.ReadKey();
@@ -207,6 +213,26 @@ namespace ConsoleApp
                     excel.DocumentBuilder(link.GetData().GetCustomers());
                     break;
             }
+
+            Console.WriteLine("\nSpreadsheet file created with success on desktop.");
+        }
+
+        /// <summary>
+        /// Creates a portable document (.pdf).
+        /// </summary>
+        /// <param name="file"></param>
+        public void Pdf(string file)
+        {
+            // File existing verification.
+            if (File.Exists(desktopPath + file))
+            {
+                File.Delete(desktopPath + file);
+            }
+
+            // PDF object
+            PortableDocument pdf = new PortableDocument(desktopPath, file, "Customer-Manager");
+            // File creation.
+            pdf.DocumentBuilder(link.GetData().GetCustomers());
 
             Console.WriteLine("\nSpreadsheet file created with success on desktop.");
         }
