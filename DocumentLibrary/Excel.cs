@@ -20,6 +20,10 @@ namespace DocumentLibrary
 
         #region Method
 
+        /// <summary>
+        /// Creates a Microsoft Excel Document.
+        /// </summary>
+        /// <param name="items">List of values which uses like header into the document</param>
         public void DocumentBuilder(List<Customer> items)
         {
             // Sheet meter.
