@@ -47,7 +47,7 @@ namespace DocumentLibrary
         {
             foreach (Customer item in items)
             {
-                stringBuilder.AppendLine(item.Customer_lastName + "," + item.Customer_firstName);
+                stringBuilder.AppendLine("\"" + item.Customer_lastName + "\"" + "," + "\"" + item.Customer_firstName + "\"");
             }
 
             File.AppendAllText(GetPath() + GetFile(), stringBuilder.ToString());
