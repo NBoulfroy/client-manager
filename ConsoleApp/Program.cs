@@ -233,7 +233,7 @@ namespace ConsoleApp
             // File creation.
             pdf.DocumentBuilder(link.GetData().GetCustomers());
 
-            Console.WriteLine("\nSpreadsheet file created with success on desktop.");
+            Console.WriteLine("\nOpen document file created with success on desktop.");
         }
     }
 }
