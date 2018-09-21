@@ -52,11 +52,8 @@ namespace ConsoleApp
                         Spreadsheet("excel", "spreadsheet.xlsx");
                         break;
                     case "9":
-                        Pdf("customerList");
+                        PortableDocument("portableDocument.pdf");
                         break;
-
-
-
                 }
                 Console.WriteLine("\nPress any other key to return to the menu ...");
                 Console.ReadKey();
@@ -80,10 +77,11 @@ namespace ConsoleApp
             Console.WriteLine("4. Delete customer");
             Console.WriteLine("5. Print CSV file");
             Console.WriteLine("6. Print ODS file");
-            Console.WriteLine("7. Print xls file");
-            Console.WriteLine("8. Print xlsx file");
-            Console.WriteLine("9. Exit");
-            Console.WriteLine("------------------------------------");
+            Console.WriteLine("7. Print XLS file");
+            Console.WriteLine("8. Print XLSX file");
+            Console.WriteLine("9. Print PDF file");
+            Console.WriteLine("10. Exit");
+            Console.WriteLine("-----------------------------------");
             Console.Write("Choice: ");
         }
 
@@ -218,10 +216,10 @@ namespace ConsoleApp
         }
 
         /// <summary>
-        /// Creates a portable document (.pdf).
+        /// Creates a portable document file (.pdf).
         /// </summary>
         /// <param name="file"></param>
-        public void Pdf(string file)
+        static void PortableDocument(string file)
         {
             // File existing verification.
             if (File.Exists(desktopPath + file))
@@ -230,7 +228,8 @@ namespace ConsoleApp
             }
 
             // PDF object
-            PortableDocument pdf = new PortableDocument(desktopPath, file, "Customer-Manager");
+            PortableDocument pdf = new PortableDocument(desktopPath, file, "Customer-Manager", 100, 25);
+
             // File creation.
             pdf.DocumentBuilder(link.GetData().GetCustomers());
 
